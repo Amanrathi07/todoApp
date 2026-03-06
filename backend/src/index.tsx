@@ -1,32 +1,36 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
+import { basicAuth } from 'hono/basic-auth'
 
-const app = new Hono();
+ const app = new Hono();
 
 
 
 app.use(logger())
 
-const View = () => {
-  return (
-    <html>
-      <body>
-        <h1>Hello Hono!</h1>
-      </body>
-    </html>
-  )
-}
+app.use(
+  basicAuth({
+    verifyUser(username, password, c) {
+      const name = "aman" 
+      const pass = "aman"
+     return (
+        username === name && password === pass
+      )
+    },
+  })
+)
+
 
 
 app.get("/", (c) => {
-    return c.json({
-        message:"working"
-    })
+    return c.text("working")
 });
 
-app.get('/page', (c) => {
-  return c.html(<View />)
-})
 
-export default app;
+
+
+export default {
+  port : 3001 ,
+  fetch: app.fetch
+}
 
