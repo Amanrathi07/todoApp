@@ -1,23 +1,27 @@
 // db.ts
 import { Dexie, type EntityTable } from "dexie"
 
-interface Friend {
+interface TodoType {
   id: number
   title: string
   description: string
+  completed: boolean
+  status: "synced" | "unsynced"
+  createdAt: Date
+  updatedAt: Date
 }
 
 const db = new Dexie("todo_table") as Dexie & {
   todos: EntityTable<
-    Friend,
+    TodoType,
     "id" // primary key "id" (for the typings only)
   >
 }
 
 // Schema declaration:
 db.version(1).stores({
-  todos: "++id, title, description", // primary key "id" (for the runtime!)
+  todos: "++id, title, description ,completed , status , createdAt , updatedAt", // primary key "id" (for the runtime!)
 })
 
-export type { Friend }
+export type { TodoType }
 export { db }

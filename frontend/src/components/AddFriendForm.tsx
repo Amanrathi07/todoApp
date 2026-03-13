@@ -3,17 +3,29 @@ import { db } from "../db"
 import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 
+interface props {
+  setBcSync : ()=>void
+}
+
 export function AddFriendForm() {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
 
   async function addFriend() {
     try {
-      // Add the new friend!
-      await db.todos.add({
+     
+      const date = new Date()
+
+      const data = await db.todos.add({
         title,
         description,
+        completed:false ,
+        status:"unsynced",
+        createdAt:date,
+        updatedAt:date
       })
+
+      
       setDescription("")
       setTitle("")
     } catch (error) {
