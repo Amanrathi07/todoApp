@@ -2,17 +2,11 @@
   "name": "backend",
   "module": "index.ts",
   "type": "module",
-  "scripts": {
-    "dev": "bun --watch ./src/index.tsx "
-  },
   "private": true,
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
-  },
-  "dependencies": {
-    "hono": "^4.12.5"
   }
 }
