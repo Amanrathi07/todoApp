@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { AddFriendForm } from "./components/AddFriendForm";
 import ShowData from "./components/ShowData";
 import { db } from "./db";
@@ -6,20 +5,20 @@ import { useLiveQuery } from "dexie-react-hooks";
 
 export default function App() {
 
-    const todos = useLiveQuery(async() => {
-    const todos = await db.todos.where("status").equals("unsynced")
-    console.log(todos)
-    return todos
-   })
-  
+  const unSyncTodos = useLiveQuery(async () => {
+    return await db.todos.where("status").equals("unsynced").toArray();
+  });
+
+  let status = "loading...";
+  if (unSyncTodos) {
+    status = unSyncTodos.length > 0 ? "unsynced" : "synced";
+  }
+
   return (
     <div className="h-dvh flex flex-col gap-10 items-center justify-center">
-      {/* {bcSync?(<>
-        <p>"data is not sync , click to sync the data"</p>
-        <Button>Sync</Button>
-      </>):"data is synced"} */}
+      {status}
       <ShowData />
       <AddFriendForm />
     </div>
-  )
+  );
 }
