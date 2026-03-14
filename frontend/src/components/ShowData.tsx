@@ -21,8 +21,10 @@ export default function ShowData() {
             <li className="bg-amber-200 p-3" key={todos.id}>
             <p>{todos.title}</p>
             <span className="bg-muted-foreground">{todos.description}</span>
+            <p>{todos.status}</p>
             {/* @ts-ignore */}
             <Button onClick={()=>deleteTodo(Number(todos.id), todos.status)} variant={"destructive"}>Delete</Button>
+            <Button variant={"link"} onClick={()=>{db.todos.update(todos.id,{status:"synced"})}}>synced</Button>
         </li>
         
       ))}
