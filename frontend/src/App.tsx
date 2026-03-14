@@ -6,7 +6,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 export default function App() {
 
   const unSyncTodos = useLiveQuery(async () => {
-    return await db.todos.where("status").equals("unsynced").toArray();
+    return await db.todos.where("status").anyOf(["unsynced","deleted"]).toArray();
   });
 
   let status = "loading...";

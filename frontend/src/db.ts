@@ -6,7 +6,7 @@ interface TodoType {
   title: string
   description: string
   completed: boolean
-  status: "synced" | "unsynced"
+  status: "synced" | "unsynced" | "deleted"
   createdAt: Date
   updatedAt: Date
 }
