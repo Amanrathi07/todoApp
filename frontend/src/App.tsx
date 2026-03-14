@@ -6,9 +6,11 @@ import { useLiveQuery } from "dexie-react-hooks";
 
 export default function App() {
 
-   const todos = useLiveQuery(() => db.todos.toArray())
-    const status = todos?.filter(todo => todo.status="unsynced")
-    console.log("status is ",status[0].status)
+    const todos = useLiveQuery(async() => {
+    const todos = await db.todos.where("status").equals("unsynced")
+    console.log(todos)
+    return todos
+   })
   
   return (
     <div className="h-dvh flex flex-col gap-10 items-center justify-center">
