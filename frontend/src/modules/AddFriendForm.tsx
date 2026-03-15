@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { db } from "../db"
-import { Input } from "./ui/input"
-import { Button } from "./ui/button"
+import { Input } from "../components/ui/input"
+import { Button } from "../components/ui/button"
 
 interface props {
   setBcSync : ()=>void

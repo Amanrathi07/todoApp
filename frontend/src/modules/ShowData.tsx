@@ -1,6 +1,6 @@
+import { Button } from "../components/ui/button"
 import { db } from "../db"
 import { useLiveQuery } from "dexie-react-hooks"
-import { Button } from "./ui/button"
 
 export default function ShowData() {
     const todos = useLiveQuery(() => db.todos.where("status").anyOf(["synced","unsynced"]).toArray())
