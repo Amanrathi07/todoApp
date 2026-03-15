@@ -12,7 +12,7 @@ app.get("/",(req,res)=>{
     res.send("working")
 })
 
-app.use("/user",authRoute)
+app.use("/v1/auth",authRoute)
 
 app.listen(3000,()=>{
     console.log("server is running on http://localhost:3000/")
