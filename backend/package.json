@@ -4,11 +4,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun ./src/index.ts --watch"
+    "dev": "bun --watch ./src/index.ts "
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/express": "^5.0.6"
+    "@types/dotenv": "^8.2.3",
+    "@types/express": "^5.0.6",
+    "dotenv": "^17.3.1",
+    "prisma": "^7.5.0"
   },
   "peerDependencies": {
     "typescript": "^5"
