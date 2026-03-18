@@ -1,11 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import { AddFriendForm } from "./modules/AddFriendForm";
-import ShowData from "./modules/ShowData";
 import { db } from "./db";
 import { useLiveQuery } from "dexie-react-hooks";
 import Signup from "./modules/Signup";
-import { Button } from "./components/ui/button";
-import { toast } from "sonner";
 import Todos from "./modules/Todos";
 
 export default function App() {

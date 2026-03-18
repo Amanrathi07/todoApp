@@ -3,12 +3,12 @@ import type { NextFunction, Request } from "express";
 
 
 
-export function getToken(req:Request,res:Response,next:NextFunction){
+export function getTokenFromReq(req:Request,res:Response,next:NextFunction){
 
     const token= req.cookies ;
     const Id = jwt.verify(token.todoCookie , process.env.SECRET!)
 
-    req.userId = Id
+    req.userId = Id ;
     next()
 }
 
