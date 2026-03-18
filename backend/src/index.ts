@@ -10,10 +10,11 @@ const app = express() ;
 app.use(cookieParser()) 
 app.use(express.json())
 app.use(cors({
-    // origin: "http://localhost:5173", 
+    origin: "http://localhost:5174", 
     credentials: true
 }))
 dotenv.config()
+
 
 app.get("/",(req,res)=>{
     res.send("working")
