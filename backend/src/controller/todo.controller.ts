@@ -1,7 +1,8 @@
 import type { Response, Request } from "express";
 import { prismaClient } from "../lib/prisma";
+import type { NewRequest } from "../middleware/auth.middleware";
 
-export const todoHandeler = async(req:Request, res:Response) => {
+export const todoHandeler = async(req:NewRequest, res:Response) => {
   const {dbId, title, description, status, completed, createdAt, updatedAt } =
     req.body;
   if (status == "unsynced") {
@@ -10,7 +11,7 @@ export const todoHandeler = async(req:Request, res:Response) => {
         title,
         description,
         completed,
-        userId: req.userId,
+        userId: req.userId as string,
         createdAt,
         updatedAt,
       },
