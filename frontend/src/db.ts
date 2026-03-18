@@ -3,6 +3,7 @@ import { Dexie, type EntityTable } from "dexie"
 
 interface TodoType {
   id: number
+  dbId?:string
   title: string
   description: string
   completed: boolean
