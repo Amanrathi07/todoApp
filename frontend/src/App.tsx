@@ -6,6 +6,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import Signup from "./modules/Signup";
 import { Button } from "./components/ui/button";
 import { toast } from "sonner";
+import Todos from "./modules/Todos";
 
 export default function App() {
   const unSyncTodos = useLiveQuery(async () => {
@@ -22,11 +23,7 @@ export default function App() {
 
   return (
     <Routes>
-      <Route path="/" element={ <div className="h-dvh flex flex-col gap-10 items-center justify-center">
-          {status}
-          <ShowData />
-          <AddFriendForm />
-        </div> } />
+      <Route path="/" element={ <Todos status={status}/> } />
 
         <Route path="/signup" element={<Signup />} />
     </Routes>
