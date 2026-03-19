@@ -49,3 +49,29 @@ export const todoHandeler = async(req:NewRequest, res:Response) => {
         message:"what the fuck !!!!"
     })
 }
+
+export const getAlltodos= async(req:NewRequest ,res:Response)=>{
+    try {
+      const dbResponce = await prismaClient.todo.findMany({
+        where:{
+          id:req.userId as string 
+        }
+      })
+
+      if(!dbResponce){
+        return res.status(402).json({
+          message:"somthing somthing"
+        })
+      }
+
+      return res.status(200).json({
+        todos : dbResponce
+      })
+
+    } catch (error) {
+      console.log(error)
+      return res.status(400).json({
+        message:"internal server error"
+      })
+    }
+}
