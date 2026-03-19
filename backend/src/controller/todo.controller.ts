@@ -5,6 +5,8 @@ import type { NewRequest } from "../middleware/auth.middleware";
 export const todoHandeler = async(req:NewRequest, res:Response) => {
   const {dbId, title, description, status, completed, createdAt, updatedAt } =
     req.body;
+
+
   if (status == "unsynced") {
     const newTodo =await prismaClient.todo.create({
       data: {
@@ -27,13 +29,14 @@ export const todoHandeler = async(req:NewRequest, res:Response) => {
       message: "added new todo in the db",
     });
   }
-
+  
   if (status == "deleted") {
     const dbmessage =await prismaClient.todo.delete({
         where:{
             id:dbId
         }
     })
+    
      if (!dbmessage) {
       return res.status(400).json({
         message: "error while making new entri in db",
@@ -54,7 +57,7 @@ export const getAlltodos= async(req:NewRequest ,res:Response)=>{
     try {
       const dbResponce = await prismaClient.todo.findMany({
         where:{
-          id:req.userId as string 
+          userId:req.userId as string 
         }
       })
 
