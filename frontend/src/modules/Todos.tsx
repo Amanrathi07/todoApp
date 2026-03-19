@@ -4,6 +4,10 @@ import { db, type TodoType } from "../db";
 import { AddFriendForm } from "./AddFriendForm";
 import ShowData from "./ShowData";
 
+interface TodoProps extends TodoType{
+    userId:string
+}
+
 export default function Todos({status}:{status:string}) {
     async function sendTodos(){
         try {
@@ -35,7 +39,7 @@ export default function Todos({status}:{status:string}) {
 
             await db.todos.clear()
 
-            dbResponce.data.todos.map(async(todo:TodoType)=>{
+            dbResponce.data.todos.map(async(todo:TodoProps)=>{
             await db.todos.add({
                 title:todo.title,
                 description:todo.description,
