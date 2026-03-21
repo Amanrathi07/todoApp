@@ -4,6 +4,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import Signup from "./modules/Signup";
 import Todos from "./modules/Todos";
 import Signin from "./modules/Signin";
+import useAuth from "./hooks/useAuth";
 
 
 export default function App() {
@@ -19,7 +20,15 @@ export default function App() {
     status = unSyncTodos.length > 0 ? "unsynced" : "synced";
   }
 
+  const {auth,setAuth} = useAuth()
   
+  // if(auth){
+  //   return(
+  //     <div>
+  //       {auth.email}
+  //     </div>
+  //   )
+  // }
    
   return (
     <Routes>
