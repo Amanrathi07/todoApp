@@ -20,7 +20,14 @@ export default function App() {
     status = unSyncTodos.length > 0 ? "unsynced" : "synced";
   }
 
-  const {auth,setAuth} = useContext(AuthContext)
+  const context = useContext(AuthContext)
+
+  if(!context){
+     throw new Error("AuthContext not found");
+  }
+
+
+    const { auth, setAuth } = context;
 
   return (
     <Routes>
