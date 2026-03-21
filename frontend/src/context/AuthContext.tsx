@@ -19,13 +19,16 @@ export default function AuthProvider({children}:{children:React.ReactNode;}) {
     async function checkAuth() {
        const responce = await axios.get("http://localhost:3000/v1/auth/me",{withCredentials:true}) ;
 
+
+
        if(!responce.data){
-        setAuth(responce.data)
+        return 
        }
+       setAuth(responce.data)
     }
 
     useEffect(()=>{
-
+        checkAuth()
     },[])
   return (
     <AuthContext.Provider value={{auth,setAuth}}>
