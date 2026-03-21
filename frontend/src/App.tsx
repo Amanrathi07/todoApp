@@ -4,6 +4,8 @@ import { useLiveQuery } from "dexie-react-hooks";
 import Signup from "./modules/Signup";
 import Todos from "./modules/Todos";
 import Signin from "./modules/Signin";
+import { useContext } from "react";
+import { AuthContext } from "./context/useAuthContext";
 
 export default function App() {
   const unSyncTodos = useLiveQuery(async () => {
@@ -17,6 +19,8 @@ export default function App() {
   if (unSyncTodos) {
     status = unSyncTodos.length > 0 ? "unsynced" : "synced";
   }
+
+  const {auth,setAuth} = useContext(AuthContext)
 
   return (
     <Routes>
