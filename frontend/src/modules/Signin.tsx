@@ -4,17 +4,20 @@ import { Button } from "../components/ui/button";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 export default function Signin() {
     const [data,setData] = useState({email:"",password:""})
     const router = useNavigate() ;
+
+    const {setAuth} =useAuth()
     async function handelForm(){
         
          const responce  = await axios.post("http://localhost:3000/v1/auth/signin",data,{
             withCredentials:true
         })
-        console.log(responce.data)
         localStorage.setItem("todoAuth",JSON.stringify(responce.data.auth))
+        setAuth(responce.data.auth)
         toast.success(responce.data.message)
         router("/")
     }

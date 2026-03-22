@@ -4,6 +4,7 @@ import { Button } from "../components/ui/button";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 
 export default function Signup() {
@@ -11,6 +12,8 @@ export default function Signup() {
     const [data,setData] = useState({name:"",email:"",password:""}) ;
 
     const router = useNavigate()
+
+  const {setAuth} =useAuth()
 
     async function handelForm(){
         
@@ -20,6 +23,7 @@ export default function Signup() {
         })
 
          localStorage.setItem("todoAuth",JSON.stringify(responce.data.auth))
+         setAuth(responce.data.auth)
         toast.success(responce.data.message)
         router("/")
        } catch (error) {
