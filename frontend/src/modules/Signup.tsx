@@ -19,8 +19,7 @@ export default function Signup() {
             withCredentials:true
         })
 
-        console.log(responce)
-
+         localStorage.setItem("todoAuth",JSON.stringify(responce.data.auth))
         toast.success(responce.data.message)
         router("/")
        } catch (error) {

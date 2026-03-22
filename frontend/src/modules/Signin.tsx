@@ -13,6 +13,8 @@ export default function Signin() {
          const responce  = await axios.post("http://localhost:3000/v1/auth/signin",data,{
             withCredentials:true
         })
+        console.log(responce.data)
+        localStorage.setItem("todoAuth",JSON.stringify(responce.data.auth))
         toast.success(responce.data.message)
         router("/")
     }

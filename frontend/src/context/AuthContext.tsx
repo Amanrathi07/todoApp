@@ -3,8 +3,8 @@ import React, { createContext, useEffect, type Dispatch, type SetStateAction } f
 
 
 type AuthContextType = {
-  auth: {id:string ,name:string , email:string } | null;
-  setAuth: Dispatch<SetStateAction<{ id: string; name: string; email: string; } | null>>
+  auth: {name:string , email:string } | null;
+  setAuth: Dispatch<SetStateAction<{  name: string; email: string; } | null>>
 };
 
 export const AuthContext = createContext<AuthContextType | null >(null);
@@ -14,17 +14,18 @@ import { useState } from "react";
 
 
 export default function AuthProvider({children}:{children:React.ReactNode;}) {
-    const[auth,setAuth] = useState<{id:string ,name:string , email:string } | null>(null) ;
+    const[auth,setAuth] = useState<{name:string , email:string } | null>(null) ;
 
     async function checkAuth() {
-       const responce = await axios.get("http://localhost:3000/v1/auth/me",{withCredentials:true}) ;
+      //  const responce = await axios.get("http://localhost:3000/v1/auth/me",{withCredentials:true}) ;
+
+      const responce = JSON.parse(localStorage.getItem("todoAuth") as string)
 
 
-
-       if(!responce.data){
+       if(!responce){
         return 
        }
-       setAuth(responce.data)
+       setAuth(responce)
     }
 
     useEffect(()=>{

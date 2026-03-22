@@ -40,7 +40,11 @@ route.post("/signup", async (req, res) => {
   const jwt = jwtGenerate(dbResponce.id);
 
   return res.cookie("todoCookie", jwt).status(201).json({
-    message: "User account created successfully."
+    message: "User account created successfully." ,
+    auth:{
+      name:dbResponce.name,
+      email:dbResponce.email
+    }
   });
 });
 
@@ -76,7 +80,11 @@ route.post("/signin", async (req, res) => {
   const jwt = jwtGenerate(dbResponce.id );
 
   return res.cookie("todoCookie", jwt).status(200).json({
-    message: "Signed in successfully."
+    message: "Signed in successfully.",
+    auth:{
+      name:dbResponce.name,
+      email:dbResponce.email
+    }
   });
 });
 

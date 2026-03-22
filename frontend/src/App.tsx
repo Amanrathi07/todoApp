@@ -4,6 +4,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import Signup from "./modules/Signup";
 import Todos from "./modules/Todos";
 import Signin from "./modules/Signin";
+import Navbar from "./modules/Navbar";
 
 
 export default function App() {
@@ -23,10 +24,11 @@ export default function App() {
    
   return (
     <Routes>
-      <Route path="/" element={ <Todos  status={status}/> } />
-
+        <Route path={"/"} element={<Navbar />}>
+        <Route path="/" element={ <Todos  status={status}/> } />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
+        </Route>
 
     </Routes>
   );
