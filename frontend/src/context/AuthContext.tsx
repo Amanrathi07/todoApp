@@ -1,5 +1,6 @@
 // import axios from "axios";
 import React, { createContext, useEffect, type Dispatch, type SetStateAction } from "react"
+import { useState } from "react";
 
 
 type AuthContextType = {
@@ -9,7 +10,6 @@ type AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType | null >(null);
  
-import { useState } from "react";
 
 
 
