@@ -16,7 +16,7 @@ app.use(cors({
 dotenv.config()
 
 
-app.get("/",(req,res)=>{
+app.get("/helthCheck",(req,res)=>{
     return res.status(200).json({
         message:"working",
         online:true ,   

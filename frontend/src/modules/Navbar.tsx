@@ -5,7 +5,7 @@ import { db } from "../db";
 
 export default function Navbar({online}:{online:boolean}) {
     const {auth,setAuth} = useAuth()
-    // if(!auth) null 
+    if(!auth) null 
 
     function handelLogout(){
         localStorage.removeItem("todoAuth") ,
@@ -15,6 +15,8 @@ export default function Navbar({online}:{online:boolean}) {
         setAuth(null)
         db.todos.clear()
     }
+
+    console.log("it here",online)
   return (
     <>
     <nav className="sticky top-0 z-50 w-full border-b border-zinc-200/60 bg-white/70 backdrop-blur-xl">

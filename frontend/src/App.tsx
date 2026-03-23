@@ -12,26 +12,21 @@ import axios from "axios";
 export default function App() {
   const [online,setOnline]=useState<boolean>(false);
 
-  async function healthCheck(){
+  
+ useEffect(() => {
+  const checkInterval = setInterval(async () => {
     try {
-      const res = await axios.get("http://localhost:3000/") ;
-      console.log(res.data)
-      setOnline(res.data.online)
-    } catch (error) {
-      console.log(error)
-      setOnline(false)
+      const res = await axios.get("http://localhost:3000/helthCheck");
+      setOnline(res.data.online);
+    } catch (err) {
+      setOnline(false); 
     }
-  }
+  }, 5000);
 
-  useEffect(()=>{
-    const checkInterval = setInterval(() => {
-      healthCheck()
-    }, 5000);
-
-    return()=>{
-      clearInterval(checkInterval)
-    }
-  },[])
+  return () => {
+    clearInterval(checkInterval);
+  };
+}, []);
 
   const unSyncTodos = useLiveQuery(async () => {
     return await db.todos
