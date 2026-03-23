@@ -77,9 +77,8 @@ route.post("/signin", async (req, res) => {
     });
   }
 
-  const jwt = jwtGenerate(dbResponce.id );
-
-  return res.cookie("todoCookie", jwt).status(200).json({
+  const jwt = jwtGenerate(dbResponce.id);
+  return res.cookie("todoCookie",jwt).status(200).json({
     message: "Signed in successfully.",
     auth:{
       name:dbResponce.name,

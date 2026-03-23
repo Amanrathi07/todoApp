@@ -6,6 +6,7 @@ const router = Router();
 
 router.get("/todos",getTokenFromReq,getAlltodos)
 
+
 router.post("/todo",getTokenFromReq,todoHandeler );
 
 export default router;

@@ -8,8 +8,10 @@ export interface NewRequest extends Request{
 export function getTokenFromReq(req:NewRequest,res:Response,next:NextFunction){
 
     const token= req.cookies ;
-    const Id = jwt.verify(token.todoCookie , process.env.SECRET!)
 
+    console.log("token i get from req :",token)
+    const Id = jwt.verify(token.todoCookie,process.env.SECRET!)
+    
     req.userId = Id ;
     next()
 }

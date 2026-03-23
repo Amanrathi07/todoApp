@@ -3,8 +3,12 @@ import { prismaClient } from "../lib/prisma";
 import type { NewRequest } from "../middleware/auth.middleware";
 
 export const todoHandeler = async(req:NewRequest, res:Response) => {
-  const {dbId, title, description, status, completed, createdAt, updatedAt } =
+  
+ try {
+   const {dbId, title, description, status, completed, createdAt, updatedAt } =
     req.body;
+
+    console.log("req body is :",req.body)
 
 
   if (status == "unsynced") {
@@ -19,19 +23,19 @@ export const todoHandeler = async(req:NewRequest, res:Response) => {
       },
     });
 
+    
     if (!newTodo) {
       return res.status(400).json({
         message: "error while making new entri in db",
       });
     }
+    console.log("so the db id will be :",newTodo.id)
     return res.status(201).json({
       dbId:newTodo.id ,
       message: "added new todo in the db",
     });
   }
   
- try {
-  console.log(" todo id is : ",dbId)
    if (status == "deleted") {
     const dbmessage =await prismaClient.todo.delete({
         where:{
@@ -53,11 +57,12 @@ export const todoHandeler = async(req:NewRequest, res:Response) => {
     return res.status(200).json({
         message:"what the fuck !!!!"
     })
+
  } catch (error) {
-  console.log("error in the delete operation : ",error)
-  return res.status(400).json({
-    message:"internal server error"
-  })
+    console.log("error in the todoHandeler function ") ;
+    return res.status(400).json({
+      message:"internal server error "
+    })
  }
 }
 
@@ -80,7 +85,7 @@ export const getAlltodos= async(req:NewRequest ,res:Response)=>{
       })
 
     } catch (error) {
-      console.log(error)
+      console.log("error in the getAlltodos function")
       return res.status(400).json({
         message:"internal server error"
       })
