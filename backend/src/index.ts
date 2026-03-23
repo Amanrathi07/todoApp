@@ -17,7 +17,10 @@ dotenv.config()
 
 
 app.get("/",(req,res)=>{
-    res.send("working")
+    return res.status(200).json({
+        message:"working",
+        online:true ,   
+    })
 })
 
 app.use("/v1/auth",authRoute)

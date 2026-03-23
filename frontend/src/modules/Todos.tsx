@@ -3,6 +3,7 @@ import { Button } from "../components/ui/button";
 import { db } from "../db";
 import { AddFriendForm } from "./AddFriendForm";
 import ShowData from "./ShowData";
+import { useEffect } from "react";
 
 
 interface todoResType{
@@ -18,6 +19,14 @@ interface todoResType{
 
 
 export default function Todos({status}:{status:string}) {
+
+    useEffect(()=>{
+        if(navigator.onLine && status=="unsynced"){
+            sendTodos()
+        }
+    },[status])
+
+
     async function sendTodos(){
         try {
             const todos =await db.todos.where("status").anyOf(["unsynced","deleted"]).toArray() ;

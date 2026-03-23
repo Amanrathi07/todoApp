@@ -3,9 +3,9 @@ import { Button, buttonVariants } from "../components/ui/button";
 import useAuth from "../hooks/useAuth";
 import { db } from "../db";
 
-export default function Navbar() {
+export default function Navbar({online}:{online:boolean}) {
     const {auth,setAuth} = useAuth()
-    if(!auth) null 
+    // if(!auth) null 
 
     function handelLogout(){
         localStorage.removeItem("todoAuth") ,
@@ -23,6 +23,9 @@ export default function Navbar() {
                 <h1 className="text-lg font-semibold tracking-tight text-zinc-900">
                     <Link to={"/"}>Todo App</Link>
                 </h1>
+            </div>
+            <div>
+                { online?"online":"ofline"}
             </div>
             <div className="flex items-center gap-2">
                 {

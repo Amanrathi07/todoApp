@@ -5,9 +5,34 @@ import Signup from "./modules/Signup";
 import Todos from "./modules/Todos";
 import Signin from "./modules/Signin";
 import Navbar from "./modules/Navbar";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 export default function App() {
+  const [online,setOnline]=useState<boolean>(false);
+
+  async function healthCheck(){
+    try {
+      const res = await axios.get("http://localhost:3000/") ;
+      console.log(res.data)
+      setOnline(res.data.online)
+    } catch (error) {
+      console.log(error)
+      setOnline(false)
+    }
+  }
+
+  useEffect(()=>{
+    const checkInterval = setInterval(() => {
+      healthCheck()
+    }, 5000);
+
+    return()=>{
+      clearInterval(checkInterval)
+    }
+  },[])
+
   const unSyncTodos = useLiveQuery(async () => {
     return await db.todos
       .where("status")
@@ -24,7 +49,7 @@ export default function App() {
    
   return (
     <Routes>
-        <Route path={"/"} element={<Navbar />}>
+        <Route path={"/"} element={<Navbar online={online}/>}>
         <Route path="/" element={ <Todos  status={status}/> } />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
