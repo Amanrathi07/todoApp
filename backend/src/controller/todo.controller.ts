@@ -30,10 +30,12 @@ export const todoHandeler = async(req:NewRequest, res:Response) => {
     });
   }
   
-  if (status == "deleted") {
+ try {
+  console.log(" todo id is : ",dbId)
+   if (status == "deleted") {
     const dbmessage =await prismaClient.todo.delete({
         where:{
-            id:dbId
+            id:dbId as string ,
         }
     })
     
@@ -51,6 +53,12 @@ export const todoHandeler = async(req:NewRequest, res:Response) => {
     return res.status(200).json({
         message:"what the fuck !!!!"
     })
+ } catch (error) {
+  console.log("error in the delete operation : ",error)
+  return res.status(400).json({
+    message:"internal server error"
+  })
+ }
 }
 
 export const getAlltodos= async(req:NewRequest ,res:Response)=>{
