@@ -1,31 +1,19 @@
 import axios from "axios";
 import { Button } from "../components/ui/button";
-import { db, type TodoType } from "../db";
+import { db } from "../db";
 import { AddFriendForm } from "./AddFriendForm";
 import ShowData from "./ShowData";
 
 
-// {
-//     id: string;
-//     title: string;
-//     description: string;
-//     completed: boolean;
-//     createdAt: Date;
-//     updatedAt: Date;
-//     userId: string;
-// }
-
-
-// interface TodoType {
-//   id: number
-//   dbId?:string
-//   title: string
-//   description: string
-//   completed: boolean
-//   status: "synced" | "unsynced" | "deleted"
-//   createdAt: Date
-//   updatedAt: Date
-// }
+interface todoResType{
+    title:string ,
+    description:string,
+    completed:boolean ,
+    createdAt:Date,
+    updatedAt:Date,
+    id:string ,
+    status:"synced"
+}
 
 
 
@@ -40,7 +28,6 @@ export default function Todos({status}:{status:string}) {
                 
                 if(dbRes.data){
                     if(todo.status == "unsynced"){
-                    console.log("todo id in db  is ",dbRes.data.dbId)
                     db.todos.update(todo.id ,{status:"synced"})
                     db.todos.update(todo.id ,{dbId:dbRes.data.dbId})
                 }
@@ -62,14 +49,14 @@ export default function Todos({status}:{status:string}) {
 
             await db.todos.clear()
 
-            dbResponce.data.todos.map(async(td:any)=>{
+            dbResponce.data.todos.map(async(todo:todoResType)=>{
             await db.todos.add({
-                title:td.title,
-                description:td.description,
-                completed:td.completed ,
-                createdAt:td.createdAt,
-                updatedAt:td.updatedAt,
-                dbId:td.id ,
+                title:todo.title,
+                description:todo.description,
+                completed:todo.completed ,
+                createdAt:todo.createdAt,
+                updatedAt:todo.updatedAt,
+                dbId:todo.id ,
                 status:"synced"
             })
         })

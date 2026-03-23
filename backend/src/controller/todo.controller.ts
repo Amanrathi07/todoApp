@@ -8,7 +8,6 @@ export const todoHandeler = async(req:NewRequest, res:Response) => {
    const {dbId, title, description, status, completed, createdAt, updatedAt } =
     req.body;
 
-    console.log("req body is :",req.body)
 
 
   if (status == "unsynced") {
@@ -23,13 +22,12 @@ export const todoHandeler = async(req:NewRequest, res:Response) => {
       },
     });
 
-    
+
     if (!newTodo) {
       return res.status(400).json({
         message: "error while making new entri in db",
       });
     }
-    console.log("so the db id will be :",newTodo.id)
     return res.status(201).json({
       dbId:newTodo.id ,
       message: "added new todo in the db",
