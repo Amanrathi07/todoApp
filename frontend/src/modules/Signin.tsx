@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { refetchTodos } from "../functions/refetchTodos";
 
 export default function Signin() {
     const [data,setData] = useState({email:"",password:""})
@@ -23,6 +24,7 @@ export default function Signin() {
     setAuth(responce.data.auth);
 
     toast.success(responce.data.message);
+    refetchTodos()
     router("/");
     
   } catch (error:any) {

@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { refetchTodos } from "../functions/refetchTodos";
 
 
 export default function Signup() {
@@ -25,6 +26,8 @@ export default function Signup() {
          localStorage.setItem("todoAuth",JSON.stringify(responce.data.auth))
          setAuth(responce.data.auth)
         toast.success(responce.data.message)
+         refetchTodos()
+        
         router("/")
        } catch (error) {
             console.log(error)

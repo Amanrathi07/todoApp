@@ -4,9 +4,10 @@ import { db } from "../db";
 import { AddFriendForm } from "./AddFriendForm";
 import ShowData from "./ShowData";
 import { useEffect } from "react";
+import { refetchTodos } from "../functions/refetchTodos";
 
 
-interface todoResType{
+export interface todoResType{
     title:string ,
     description:string,
     completed:boolean ,
@@ -18,13 +19,13 @@ interface todoResType{
 
 
 
-export default function Todos({status}:{status:string}) {
+export default function Todos({status , online}:{status:string , online:boolean}) {
 
     useEffect(()=>{
-        if(navigator.onLine && status=="unsynced"){
+        if(navigator.onLine && status=="unsynced" && online){
             sendTodos()
         }
-    },[status])
+    },[status,online])
 
 
     async function sendTodos(){
@@ -51,28 +52,7 @@ export default function Todos({status}:{status:string}) {
         }
     } 
 
-    async function refetchTodos() {
-        const dbResponce = await axios.get("http://localhost:3000/v1/todos/todos",{withCredentials:true}) ;
-
-        if(dbResponce.data.todos){
-
-            await db.todos.clear()
-
-            dbResponce.data.todos.map(async(todo:todoResType)=>{
-            await db.todos.add({
-                title:todo.title,
-                description:todo.description,
-                completed:todo.completed ,
-                createdAt:todo.createdAt,
-                updatedAt:todo.updatedAt,
-                dbId:todo.id ,
-                status:"synced"
-            })
-        })
-        }
-
-
-    }
+    
   return (
     <div className="h-dvh flex flex-col gap-10 items-center justify-center">
           <div className="flex gap-4">

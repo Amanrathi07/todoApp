@@ -45,7 +45,7 @@ export default function App() {
   return (
     <Routes>
         <Route path={"/"} element={<Navbar online={online}/>}>
-        <Route path="/" element={ <Todos  status={status}/> } />
+        <Route path="/" element={ <Todos online={online} status={status}/> } />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
         </Route>
