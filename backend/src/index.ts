@@ -19,10 +19,6 @@ app.use(express.json());
 
 app.use(cookieParser()) ;
 
-app.use(limiter);
-
-
-
 
 
 app.get("/helthCheck",(req,res)=>{
@@ -32,9 +28,9 @@ app.get("/helthCheck",(req,res)=>{
     })
 })
 
-app.use("/v1/auth",authRoute)
+app.use("/v1/auth",limiter,authRoute)
 
-app.use("/v1/todos",todoRouter)
+app.use("/v1/todos",limiter,todoRouter)
 
 app.listen(3000,()=>{
     console.log("server is running on http://localhost:3000/")

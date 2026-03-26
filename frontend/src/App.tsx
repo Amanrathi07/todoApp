@@ -16,7 +16,7 @@ export default function App() {
  useEffect(() => {
   const checkInterval = setInterval(async () => {
     try {
-      const res = await axios.get("http://localhost:3000/helthCheck");
+      const res = await axios.get("http://localhost:3000/helthCheck",{timeout:3000});
       setOnline(res.data.online);
     } catch (err) {
       setOnline(false); 

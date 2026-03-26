@@ -11,16 +11,24 @@ export default function Signin() {
     const router = useNavigate() ;
 
     const {setAuth} =useAuth()
-    async function handelForm(){
-        
-         const responce  = await axios.post("http://localhost:3000/v1/auth/signin",data,{
-            withCredentials:true
-        })
-        localStorage.setItem("todoAuth",JSON.stringify(responce.data.auth))
-        setAuth(responce.data.auth)
-        toast.success(responce.data.message)
-        router("/")
-    }
+    async function handelForm() {
+  try {
+    const responce = await axios.post(
+      "http://localhost:3000/v1/auth/signin",
+      data,
+      { withCredentials: true }
+    );
+
+    localStorage.setItem("todoAuth", JSON.stringify(responce.data.auth));
+    setAuth(responce.data.auth);
+
+    toast.success(responce.data.message);
+    router("/");
+    
+  } catch (error:any) {
+    toast.error(error.response?.data?.message ||"Something went wrong")
+  }
+}
 
   return (
     <div className="flex h-dvh items-center justify-center ">

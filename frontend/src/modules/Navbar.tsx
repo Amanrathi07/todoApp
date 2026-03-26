@@ -16,7 +16,6 @@ export default function Navbar({online}:{online:boolean}) {
         db.todos.clear()
     }
 
-    console.log("it here",online)
   return (
     <>
     <nav className="sticky top-0 z-50 w-full border-b border-zinc-200/60 bg-white/70 backdrop-blur-xl">
