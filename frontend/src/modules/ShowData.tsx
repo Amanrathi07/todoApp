@@ -2,7 +2,7 @@ import { Button } from "../components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 import { db } from "../db"
 import { useLiveQuery } from "dexie-react-hooks"
-import { cn } from "../lib/utils"
+
 
 export default function ShowData() {
   const todos = useLiveQuery(() =>
@@ -36,10 +36,10 @@ export default function ShowData() {
             <div className="flex justify-between">
               <Button
               variant="default"
-              className="bg-green-500"
+              className={todo.completed?"bg-amber-600":"bg-green-500"}
               onClick={()=>handelComplet(Number(todo.id), todo.completed)}
             >
-              completed
+              {todo.completed?"uncomplete":"completed"}
             </Button>
               <Button
               variant="destructive"
