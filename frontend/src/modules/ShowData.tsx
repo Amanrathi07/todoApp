@@ -18,7 +18,8 @@ export default function ShowData({status}:{status:string}) {
 
   function handelComplet(id: number,completed:boolean){
     db.todos.update(id,{completed:!completed});
-
+    db.todos.update(id,{status:"completedChange"})
+    status = "unsynced"
   }
 
   if (!todos) return <p>Loading...</p>

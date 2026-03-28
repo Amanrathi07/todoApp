@@ -30,7 +30,7 @@ export default function Todos({status , online}:{status:string , online:boolean}
 
     async function sendTodos(){
         try {
-            const todos =await db.todos.where("status").anyOf(["unsynced","deleted"]).toArray() ;
+            const todos =await db.todos.where("status").anyOf(["unsynced","deleted","completedChange"]).toArray() ;
 
             (await todos).map(async(todo)=>{
                 const dbRes =await axios.post("http://localhost:3000/v1/todos/todo",todo,{withCredentials:true})
