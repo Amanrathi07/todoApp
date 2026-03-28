@@ -3,7 +3,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "../components/ui/c
 import { db } from "../db"
 import { useLiveQuery } from "dexie-react-hooks"
 
-export default function ShowData() {
+export default function ShowData({status}:{status:string}) {
   const todos = useLiveQuery(() =>
     db.todos.where("status").anyOf(["synced", "unsynced"]).toArray()
   )
@@ -14,6 +14,11 @@ export default function ShowData() {
     } else {
       db.todos.delete(id)
     }
+  }
+
+  function handelComplet(id: number,completed:boolean){
+    db.todos.update(id,{completed:!completed});
+
   }
 
   if (!todos) return <p>Loading...</p>
@@ -31,7 +36,7 @@ export default function ShowData() {
               <Button
               variant="default"
               className="bg-green-500"
-              
+              onClick={()=>handelComplet(Number(todo.id), todo.completed)}
             >
               completed
             </Button>

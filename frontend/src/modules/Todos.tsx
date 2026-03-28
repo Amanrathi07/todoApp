@@ -60,7 +60,7 @@ export default function Todos({status , online}:{status:string , online:boolean}
             <Button onClick={refetchTodos}>refetch</Button>
           </div>
           <AddFriendForm />
-          <ShowData />
+          <ShowData status={status}/>
     </div>
   )
 }
