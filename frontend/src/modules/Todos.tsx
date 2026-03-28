@@ -1,10 +1,12 @@
 import axios from "axios";
 import { Button } from "../components/ui/button";
 import { db } from "../db";
-import { AddFriendForm } from "./AddFriendForm";
+import { AddTodo } from "./AddTodo";
 import ShowData from "./ShowData";
 import { useEffect } from "react";
 import { refetchTodos } from "../functions/refetchTodos";
+import useAuth from "../hooks/useAuth";
+import { toast } from "sonner";
 
 
 export interface todoResType{
@@ -21,6 +23,8 @@ export interface todoResType{
 
 export default function Todos({status , online}:{status:string , online:boolean}) {
 
+    const {auth} = useAuth();
+
     useEffect(()=>{
         if(navigator.onLine && status=="unsynced" && online){
             sendTodos()
@@ -29,6 +33,9 @@ export default function Todos({status , online}:{status:string , online:boolean}
 
 
     async function sendTodos(){
+        if(!auth){
+            return toast.error("pls login ")
+        }
         try {
             const todos =await db.todos.where("status").anyOf(["unsynced","deleted","completedChange"]).toArray() ;
 
@@ -62,7 +69,7 @@ export default function Todos({status , online}:{status:string , online:boolean}
             <Button onClick={sendTodos}>{status}</Button>
             <Button onClick={refetchTodos}>refetch</Button>
           </div>
-          <AddFriendForm />
+          <AddTodo />
           <ShowData />
     </div>
   )
