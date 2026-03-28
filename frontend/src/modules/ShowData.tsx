@@ -2,13 +2,14 @@ import { Button } from "../components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 import { db } from "../db"
 import { useLiveQuery } from "dexie-react-hooks"
+import { cn } from "../lib/utils"
 
-export default function ShowData({status}:{status:string}) {
+export default function ShowData() {
   const todos = useLiveQuery(() =>
-    db.todos.where("status").anyOf(["synced", "unsynced"]).toArray()
+    db.todos.where("status").anyOf(["synced", "unsynced","completedChange"]).toArray()
   )
 
-  function deleteTodo(id: number, status: "synced" | "unsynced") {
+  function deleteTodo(id: number, status: "synced" | "unsynced" ) {
     if (status === "synced") {
       db.todos.update(id, { status: "deleted" })
     } else {
@@ -19,7 +20,6 @@ export default function ShowData({status}:{status:string}) {
   function handelComplet(id: number,completed:boolean){
     db.todos.update(id,{completed:!completed});
     db.todos.update(id,{status:"completedChange"})
-    status = "unsynced"
   }
 
   if (!todos) return <p>Loading...</p>
@@ -29,8 +29,8 @@ export default function ShowData({status}:{status:string}) {
       {todos.map((todo) => (
         <Card key={todo.id}>
           <CardHeader className="gap-4">
-            <CardTitle>{todo.title}</CardTitle>
-            <CardDescription>{todo.description}</CardDescription>
+            <CardTitle className={todo.completed?"line-through":""}>{todo.title}</CardTitle>
+            <CardDescription  className={todo.completed?"line-through":""}>{todo.description}</CardDescription>
 
 
             <div className="flex justify-between">

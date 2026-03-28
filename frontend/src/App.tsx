@@ -31,7 +31,7 @@ export default function App() {
   const unSyncTodos = useLiveQuery(async () => {
     return await db.todos
       .where("status")
-      .anyOf(["unsynced", "deleted"])
+      .anyOf(["unsynced", "deleted","completedChange"])
       .toArray();
   });
 
