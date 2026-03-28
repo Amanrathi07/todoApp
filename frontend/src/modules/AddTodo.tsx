@@ -39,7 +39,7 @@ export function AddTodo() {
 
   return (
      <>
-      <div className="flex gap-6">
+      <div className="flex flex-col md:flex-row gap-6">
         <Input
         placeholder="Title"
         type="text"
