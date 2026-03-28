@@ -44,6 +44,9 @@ export default function Todos({status , online}:{status:string , online:boolean}
                 if(todo.status == "deleted"){
                     db.todos.delete(todo.id )
                 }
+                if(todo.status=="completedChange"){
+                    db.todos.update(todo.id ,{status:"synced"})
+                }
                 }
             })
             

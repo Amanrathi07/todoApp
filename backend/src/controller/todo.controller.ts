@@ -52,6 +52,13 @@ export const todoHandeler = async(req:NewRequest, res:Response) => {
 
   }
 
+  if(status =="completedChange"){
+    const dbmessage = await prismaClient.todo.update({
+      where:{id:dbId},
+      data:{completed:completed}
+    })
+  }
+
     return res.status(200).json({
         message:"what the fuck !!!!"
     })
