@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";

@@ -19,7 +19,7 @@ export function AddTodo() {
      
       const date = new Date()
 
-      const data = await db.todos.add({
+       await db.todos.add({
         title,
         description,
         completed:false ,
