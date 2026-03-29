@@ -16,7 +16,7 @@ export default function App() {
  useEffect(() => {
   const checkInterval = setInterval(async () => {
     try {
-      const res = await axios.get("http://localhost:3000/helthCheck",{timeout:3000});
+      const res = await axios.get(`${import.meta.env.VITE_API_BACKEND_URL}/helthCheck`,{timeout:3000});
       setOnline(res.data.online);
     } catch (err) {
       setOnline(false); 

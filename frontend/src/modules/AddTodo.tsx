@@ -4,9 +4,7 @@ import { Input } from "../components/ui/input"
 import { Button } from "../components/ui/button"
 import { toast } from "sonner"
 
-interface props {
-  setBcSync : ()=>void
-}
+
 
 export function AddTodo() {
   const [title, setTitle] = useState("")

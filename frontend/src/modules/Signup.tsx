@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { refetchTodos } from "../functions/refetchTodos";
+import { axiosInstance } from "../lib/axiosInstance";
 
 
 export default function Signup() {
@@ -19,9 +20,7 @@ export default function Signup() {
     async function handelForm(){
         
        try {
-         const responce  = await axios.post("http://localhost:3000/v1/auth/signup",data,{
-            withCredentials:true
-        })
+         const responce  = await axiosInstance.post("/auth/signup",data)
 
          localStorage.setItem("todoAuth",JSON.stringify(responce.data.auth))
          setAuth(responce.data.auth)

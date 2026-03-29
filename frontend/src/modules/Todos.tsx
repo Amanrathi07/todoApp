@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { refetchTodos } from "../functions/refetchTodos";
 import useAuth from "../hooks/useAuth";
 import { toast } from "sonner";
+import { axiosInstance } from "../lib/axiosInstance";
 
 
 export interface todoResType{
@@ -40,7 +41,7 @@ export default function Todos({status , online}:{status:string , online:boolean}
             const todos =await db.todos.where("status").anyOf(["unsynced","deleted","completedChange"]).toArray() ;
 
             (await todos).map(async(todo)=>{
-                const dbRes =await axios.post("http://localhost:3000/v1/todos/todo",todo,{withCredentials:true})
+                const dbRes =await axiosInstance.post("/todos/todo",todo)
 
                 
                 if(dbRes.data){

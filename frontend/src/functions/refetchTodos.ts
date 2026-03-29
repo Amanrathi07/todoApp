@@ -1,10 +1,10 @@
-import axios from "axios";
 import { db } from "../db";
 import type { todoResType } from "../modules/Todos";
+import { axiosInstance } from "../lib/axiosInstance";
 
 
 export async function refetchTodos() {
-        const dbResponce = await axios.get("http://localhost:3000/v1/todos/todos",{withCredentials:true}) ;
+        const dbResponce = await axiosInstance.get("/todos/todos") ;
 
         if(dbResponce.data.todos){
 
