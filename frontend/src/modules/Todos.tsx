@@ -64,7 +64,7 @@ export default function Todos({status , online}:{status:string , online:boolean}
 
     
   return (
-    <div className="h-dvh flex flex-col gap-10 items-center justify-center">
+    <div className=" flex flex-col gap-10 items-center justify-center">
           <div className="flex gap-4">
             <Button onClick={sendTodos}>{status}</Button>
             <Button onClick={refetchTodos}>refetch</Button>
