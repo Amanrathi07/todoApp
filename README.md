@@ -22,7 +22,7 @@ This project is not a tutorial-based clone — it was built from scratch with an
 - Express.js
 - TypeScript
 - Prisma ORM
-- PostgreSQL / MySQL (via Prisma)
+- PostgreSQL  (via Prisma)
 - JWT Authentication
 - Cookie-based auth
 - Express Rate Limiting
