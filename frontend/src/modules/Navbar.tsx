@@ -18,7 +18,7 @@ export default function Navbar({online}:{online:boolean}) {
 
   return (
     <>
-    <nav className="sticky top-0 z-50 w-full border-b border-zinc-200/60 bg-white/70 backdrop-blur-xl">
+    <nav className="sticky top-0 z-50 w-full border-b border-zinc-200/60 bg-white/70 backdrop-blur-xl mb-4">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
             <div>
                 <h1 className="text-lg font-semibold tracking-tight text-zinc-900">
@@ -65,7 +65,7 @@ export default function Navbar({online}:{online:boolean}) {
             </div>
         </div>
     </nav>
-    <main className="max-w-6xl mx-auto  ">
+    <main className="max-w-6xl mx-auto ">
         <Outlet />
     </main>
     </>
