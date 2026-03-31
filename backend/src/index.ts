@@ -24,7 +24,7 @@ app.use(cookieParser()) ;
 
 app.get("/helthCheck",(req,res)=>{
     return res.status(200).json({
-        message:"working",
+        message:"server is working",
         online:true ,   
     })
 })
