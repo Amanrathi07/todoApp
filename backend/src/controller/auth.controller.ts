@@ -29,7 +29,7 @@ export const SignIn = async (req :Request, res:Response) => {
 
   if (!isPassword) {
     return res.status(400).json({
-      message: "Invalid email or password."
+      message: "incorrect email or password."
     });
   }
 
@@ -78,7 +78,7 @@ export const SignUP =  async (req :Request, res:Response) => {
   const jwt = jwtGenerate(dbResponce.id);
 
   return res.cookie("todoCookie", jwt).status(201).json({
-    message: "User account created successfully." ,
+    message: "account created successfully." ,
     auth:{
       name:dbResponce.name,
       email:dbResponce.email
@@ -100,7 +100,7 @@ export const Me = async (req:NewRequest ,res:Response)=>{
 
     if(!dbResponce){
       return res.status(400).json({
-        message : "no user exist in db"
+        message : "login again for further use"
       })
     }
     return res.status(200).json({
