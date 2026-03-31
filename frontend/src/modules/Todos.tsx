@@ -34,7 +34,7 @@ export default function Todos({status , online}:{status:string , online:boolean}
 
     async function sendTodos(){
         if(!auth){
-            return toast.error("pls login ")
+            return toast.error("login required")
         }
         try {
             const todos =await db.todos.where("status").anyOf(["unsynced","deleted","completedChange"]).toArray() ;
