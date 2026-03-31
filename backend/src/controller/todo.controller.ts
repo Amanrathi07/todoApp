@@ -60,7 +60,7 @@ export const todoHandeler = async(req:NewRequest, res:Response) => {
   }
 
     return res.status(200).json({
-        message:"what the fuck !!!!"
+        message:"somthing went worng"
     })
 
  } catch (error) {
@@ -81,7 +81,7 @@ export const getAlltodos= async(req:NewRequest ,res:Response)=>{
 
       if(!dbResponce){
         return res.status(402).json({
-          message:"somthing somthing"
+          message:"now data was found"
         })
       }
 
