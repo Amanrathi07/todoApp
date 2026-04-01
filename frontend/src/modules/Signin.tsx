@@ -27,6 +27,7 @@ export default function Signin() {
     router("/");
     
   } catch (error:any) {
+    console.log(error.responce.data)
     toast.error(error.response?.data?.message ||"Something went wrong")
   }
 }
