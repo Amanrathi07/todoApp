@@ -3,10 +3,21 @@ import { prismaClient } from "../lib/prisma";
 import bcrypt from "bcryptjs";
 import { jwtGenerate } from "../lib/jwt_generate";
 import type { NewRequest } from "../middleware/auth.middleware";
+import z from "zod";
+import { signInSchema, signUpSchema } from "../zodSchema/auth.zod";
 
 
 export const SignIn = async (req :Request, res:Response) => {
-  const { email, password } = req.body;
+
+  const result = signInSchema.safeParse(req.body)
+
+  if(!result.success){
+    return res.status(400).json({
+      message:result.error.flatten,
+    })
+  }
+
+  const { email, password } = result.data ;
 
   if (!email || !password) {
     return res.status(400).json({
@@ -46,7 +57,16 @@ export const SignIn = async (req :Request, res:Response) => {
 
 
 export const SignUP =  async (req :Request, res:Response) => {
-  const { name, email, password } = req.body;
+
+  const result = signUpSchema.safeParse(req.body) ;
+
+  if(!result.success){
+    return res.status(400).json({
+      message:result.error.flatten ,
+    })
+  }
+
+  const { name, email, password } = result.data
 
   if (!name || !email || !password) {
     return res.status(400).json({
