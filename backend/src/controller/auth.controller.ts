@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { jwtGenerate } from "../lib/jwt_generate";
 import type { NewRequest } from "../middleware/auth.middleware";
 
+
 export const SignIn = async (req :Request, res:Response) => {
   const { email, password } = req.body;
 
