@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { startTransition, useState, useTransition } from "react";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { toast } from "sonner";
@@ -9,7 +9,7 @@ import { axiosInstance } from "../lib/axiosInstance";
 
 
 export default function Signup() {
-
+    const [ispending ,startTransition] = useTransition()
     const [data,setData] = useState({name:"",email:"",password:""}) ;
 
     const router = useNavigate()
@@ -18,7 +18,11 @@ export default function Signup() {
 
     async function handelForm(){
         
-       try {
+      if(!data.email || !data.email || !data.password){
+        return
+      }
+      startTransition(async()=>{
+         try {
          const responce  = await axiosInstance.post("/auth/signup",data)
 
          localStorage.setItem("todoAuth",JSON.stringify(responce.data.auth))
@@ -27,9 +31,10 @@ export default function Signup() {
          refetchTodos()
         
         router("/")
-       } catch (error) {
-            console.log(error)
+       } catch (error:any) {
+        toast(error.respone?.data.message)
        }
+      })
         
     }
 
@@ -42,7 +47,7 @@ export default function Signup() {
 
          <Input placeholder="password" onChange={(e)=> setData({...data,password:e.target.value})}/>
 
-         <Button type="submit" onClick={handelForm}>signup</Button>
+         <Button disabled={ispending} type="submit" onClick={handelForm}>signup</Button>
        </div>
     </div>
   )

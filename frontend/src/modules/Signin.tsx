@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { toast } from "sonner";
@@ -8,11 +8,17 @@ import { refetchTodos } from "../functions/refetchTodos";
 import { axiosInstance } from "../lib/axiosInstance";
 
 export default function Signin() {
+    const [isPending, startTransition] = useTransition()
     const [data,setData] = useState({email:"",password:""})
     const router = useNavigate() ;
 
     const {setAuth} =useAuth()
     async function handelForm() {
+      startTransition(async()=>{
+        if(!data.email || !data.password){
+        return 
+      }
+
   try {
     const responce = await axiosInstance.post(
       "/auth/signin",
@@ -27,9 +33,10 @@ export default function Signin() {
     router("/");
     
   } catch (error:any) {
-    console.log(error.responce.data)
     toast.error(error.response?.data?.message ||"Something went wrong")
   }
+      })
+      
 }
 
   return (
@@ -41,7 +48,7 @@ export default function Signin() {
 
          <Input placeholder="password" onChange={(e)=> setData({...data,password:e.target.value})}/>
 
-         <Button type="submit" onClick={handelForm}>signin</Button>
+         <Button disabled={isPending} type="submit" onClick={handelForm}>signin</Button>
        </div>
     </div>
   )
