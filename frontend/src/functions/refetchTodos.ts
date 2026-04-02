@@ -5,7 +5,7 @@ import { axiosInstance } from "../lib/axiosInstance";
 
 export async function refetchTodos() {
         const dbResponce = await axiosInstance.get("/todos/todos") ;
-        
+
         if(dbResponce.data.todos){
 
             await db.todos.clear()
@@ -20,6 +20,7 @@ export async function refetchTodos() {
                 status:"synced"
             })
         })
+         localStorage.setItem("todoLastSync",JSON.stringify(new Date()))
         }
 
 

@@ -7,6 +7,7 @@ import { refetchTodos } from "../functions/refetchTodos";
 import useAuth from "../hooks/useAuth";
 import { toast } from "sonner";
 import { axiosInstance } from "../lib/axiosInstance";
+import { checkChange } from "../functions/checkChange";
 
 
 export interface todoResType{
@@ -33,7 +34,21 @@ export default function Todos({status , online}:{status:string , online:boolean}
         }
     },[status,online])
 
+    useEffect(()=>{
+        let checkInterval:null|number = null ;
+       if(auth){
+        checkInterval = setInterval(() => {
+             checkChange(auth)
+        }, 3000);
+       }
 
+       return()=>{
+       if(checkInterval){
+        clearInterval(checkInterval)
+       }
+
+       }
+    },[])
     async function sendTodos(){
         if(!auth){
             return toast.error("login required")

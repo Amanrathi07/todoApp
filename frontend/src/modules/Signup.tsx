@@ -23,6 +23,7 @@ export default function Signup() {
         const responce = await axiosInstance.post("/auth/signup", data);
 
         localStorage.setItem("todoAuth", JSON.stringify(responce.data.auth));
+       
         setAuth(responce.data.auth);
         toast.success(responce.data.message);
         refetchTodos();

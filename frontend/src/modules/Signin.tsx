@@ -25,6 +25,7 @@ export default function Signin() {
         const responce = await axiosInstance.post("/auth/signin", data);
 
         localStorage.setItem("todoAuth", JSON.stringify(responce.data.auth));
+        
         setAuth(responce.data.auth);
 
         toast.success(responce.data.message);
