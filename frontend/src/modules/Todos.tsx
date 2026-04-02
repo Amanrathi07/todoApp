@@ -32,7 +32,6 @@ export default function Todos({status , online}:{status:string , online:boolean}
         refetchTodos()
       }, 2000);
       }
-      
 
       return()=>{
         if(refetchInterval){
