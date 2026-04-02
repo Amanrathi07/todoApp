@@ -5,11 +5,10 @@ import { axiosInstance } from "../lib/axiosInstance";
 
 export async function refetchTodos() {
         const dbResponce = await axiosInstance.get("/todos/todos") ;
-
+        
         if(dbResponce.data.todos){
 
             await db.todos.clear()
-
             dbResponce.data.todos.map(async(todo:todoResType)=>{
             await db.todos.add({
                 title:todo.title,
