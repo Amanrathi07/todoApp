@@ -23,6 +23,11 @@ export interface todoResType{
 
 export default function Todos({status , online}:{status:string , online:boolean}) {
 
+
+    useEffect(()=>{
+        
+    },[])
+
     const {auth} = useAuth();
 
     useEffect(()=>{
