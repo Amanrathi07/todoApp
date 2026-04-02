@@ -25,7 +25,20 @@ export default function Todos({status , online}:{status:string , online:boolean}
 
 
     useEffect(()=>{
-        
+      let refetchInterval :number | null = null ;
+
+      if(navigator.onLine && online){
+        refetchInterval = setInterval(() => {
+        refetchTodos()
+      }, 2000);
+      }
+      
+
+      return()=>{
+        if(refetchInterval){
+            clearInterval(refetchInterval)
+        }
+      }
     },[])
 
     const {auth} = useAuth();
