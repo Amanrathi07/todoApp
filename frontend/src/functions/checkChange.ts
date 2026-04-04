@@ -1,12 +1,10 @@
 import axios from "axios";
 import { refetchTodos } from "./refetchTodos";
-import useAuth from "../hooks/useAuth";
 
-export async function checkChange(auth){
+export async function checkChange(){
 
-    if(!auth)return
     
-    const date = JSON.parse(localStorage.getItem("todoLastSync")) 
+    const date = JSON.parse(localStorage.getItem("todoLastSync")as string) 
     
     if(!date)return
 

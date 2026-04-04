@@ -36,11 +36,10 @@ app.post("/checkChange",getTokenFromReq,async(req:NewRequest,res)=>{
     const {time} = req.body ;
     const lastSync = new Date(time).getTime()
     const dbResponce = await prismaClient.todo.findFirst({
-        where:{userId:req.userId as string} ,
-        orderBy:{
-            updatedAt:"desc"
-        }
-    }) ;
+    where: { userId: req.userId as string },
+    orderBy: { updatedAt: "desc" },
+    select: { updatedAt: true }
+});
 
 
 
@@ -51,10 +50,9 @@ app.post("/checkChange",getTokenFromReq,async(req:NewRequest,res)=>{
         })
     }
 
-    console.log(lastSync)
-    console.log(dbResponce.updatedAt.getTime())
     
     if(dbResponce.updatedAt.getTime() > lastSync){
+        console.log("send now becouse :", dbResponce)
         return res.status(200).json({
             change:true ,
             message:"pls refrech the todos"

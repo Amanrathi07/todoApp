@@ -36,11 +36,10 @@ export default function Todos({status , online}:{status:string , online:boolean}
 
     useEffect(()=>{
         let checkInterval:null|number = null ;
-       if(auth){
+       
         checkInterval = setInterval(() => {
-             checkChange(auth)
+            checkChange()
         }, 3000);
-       }
 
        return()=>{
        if(checkInterval){
