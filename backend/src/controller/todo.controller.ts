@@ -35,9 +35,12 @@ export const todoHandeler = async(req:NewRequest, res:Response) => {
   }
   
    if (status == "deleted") {
-    const dbmessage =await prismaClient.todo.delete({
+    const dbmessage =await prismaClient.todo.update({
         where:{
             id:dbId as string ,
+        } ,
+        data:{
+          deleted :true ,
         }
     })
     
