@@ -37,9 +37,11 @@ export default function Todos({status , online}:{status:string , online:boolean}
     useEffect(()=>{
         let checkInterval:null|number = null ;
        
-        checkInterval = setInterval(() => {
+        if(!!auth){
+            checkInterval = setInterval(() => {
             checkChange()
-        }, 3000);
+        }, 5000);
+        }
 
        return()=>{
        if(checkInterval){
@@ -47,7 +49,7 @@ export default function Todos({status , online}:{status:string , online:boolean}
        }
 
        }
-    },[])
+    },[auth])
     async function sendTodos(){
         if(!auth){
             return toast.error("login required")
