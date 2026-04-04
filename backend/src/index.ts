@@ -34,7 +34,7 @@ app.get("/helthCheck",(req,res)=>{
 
 app.post("/checkChange",getTokenFromReq,async(req:NewRequest,res)=>{
     const {time} = req.body ;
-    const lastSync = new Date(time).getTime()
+    const lastSync = new Date(time).getTime() 
     const dbResponce = await prismaClient.todo.findFirst({
     where: { userId: req.userId as string },
     orderBy: { updatedAt: "desc" },
