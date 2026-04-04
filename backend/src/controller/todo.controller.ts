@@ -75,8 +75,10 @@ export const getAlltodos= async(req:NewRequest ,res:Response)=>{
     try {
       const dbResponce = await prismaClient.todo.findMany({
         where:{
-          userId:req.userId as string 
-        }
+          userId:req.userId as string  ,
+          deleted : false 
+        },
+        
       })
 
       if(!dbResponce){

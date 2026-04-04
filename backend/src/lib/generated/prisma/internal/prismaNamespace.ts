@@ -608,6 +608,7 @@ export const TodoScalarFieldEnum = {
   title: 'title',
   description: 'description',
   completed: 'completed',
+  deleted: 'deleted',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'

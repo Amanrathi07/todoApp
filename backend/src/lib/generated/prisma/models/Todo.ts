@@ -29,6 +29,7 @@ export type TodoMinAggregateOutputType = {
   title: string | null
   description: string | null
   completed: boolean | null
+  deleted: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   userId: string | null
@@ -39,6 +40,7 @@ export type TodoMaxAggregateOutputType = {
   title: string | null
   description: string | null
   completed: boolean | null
+  deleted: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   userId: string | null
@@ -49,6 +51,7 @@ export type TodoCountAggregateOutputType = {
   title: number
   description: number
   completed: number
+  deleted: number
   createdAt: number
   updatedAt: number
   userId: number
@@ -61,6 +64,7 @@ export type TodoMinAggregateInputType = {
   title?: true
   description?: true
   completed?: true
+  deleted?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -71,6 +75,7 @@ export type TodoMaxAggregateInputType = {
   title?: true
   description?: true
   completed?: true
+  deleted?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -81,6 +86,7 @@ export type TodoCountAggregateInputType = {
   title?: true
   description?: true
   completed?: true
+  deleted?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -164,6 +170,7 @@ export type TodoGroupByOutputType = {
   title: string
   description: string
   completed: boolean
+  deleted: boolean
   createdAt: Date
   updatedAt: Date
   userId: string
@@ -195,6 +202,7 @@ export type TodoWhereInput = {
   title?: Prisma.StringFilter<"Todo"> | string
   description?: Prisma.StringFilter<"Todo"> | string
   completed?: Prisma.BoolFilter<"Todo"> | boolean
+  deleted?: Prisma.BoolFilter<"Todo"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
   userId?: Prisma.StringFilter<"Todo"> | string
@@ -206,6 +214,7 @@ export type TodoOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   completed?: Prisma.SortOrder
+  deleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -220,6 +229,7 @@ export type TodoWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Todo"> | string
   description?: Prisma.StringFilter<"Todo"> | string
   completed?: Prisma.BoolFilter<"Todo"> | boolean
+  deleted?: Prisma.BoolFilter<"Todo"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
   userId?: Prisma.StringFilter<"Todo"> | string
@@ -231,6 +241,7 @@ export type TodoOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   completed?: Prisma.SortOrder
+  deleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -247,6 +258,7 @@ export type TodoScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Todo"> | string
   description?: Prisma.StringWithAggregatesFilter<"Todo"> | string
   completed?: Prisma.BoolWithAggregatesFilter<"Todo"> | boolean
+  deleted?: Prisma.BoolWithAggregatesFilter<"Todo"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Todo"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Todo"> | Date | string
   userId?: Prisma.StringWithAggregatesFilter<"Todo"> | string
@@ -257,8 +269,9 @@ export type TodoCreateInput = {
   title: string
   description: string
   completed: boolean
-  createdAt: Date | string
-  updatedAt: Date | string
+  deleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
   userRel: Prisma.UserCreateNestedOneWithoutTodosInput
 }
 
@@ -267,8 +280,9 @@ export type TodoUncheckedCreateInput = {
   title: string
   description: string
   completed: boolean
-  createdAt: Date | string
-  updatedAt: Date | string
+  deleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
   userId: string
 }
 
@@ -277,6 +291,7 @@ export type TodoUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userRel?: Prisma.UserUpdateOneRequiredWithoutTodosNestedInput
@@ -287,6 +302,7 @@ export type TodoUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -297,8 +313,9 @@ export type TodoCreateManyInput = {
   title: string
   description: string
   completed: boolean
-  createdAt: Date | string
-  updatedAt: Date | string
+  deleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
   userId: string
 }
 
@@ -307,6 +324,7 @@ export type TodoUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -316,6 +334,7 @@ export type TodoUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -336,6 +355,7 @@ export type TodoCountOrderByAggregateInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   completed?: Prisma.SortOrder
+  deleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -346,6 +366,7 @@ export type TodoMaxOrderByAggregateInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   completed?: Prisma.SortOrder
+  deleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -356,6 +377,7 @@ export type TodoMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   completed?: Prisma.SortOrder
+  deleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -412,8 +434,9 @@ export type TodoCreateWithoutUserRelInput = {
   title: string
   description: string
   completed: boolean
-  createdAt: Date | string
-  updatedAt: Date | string
+  deleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type TodoUncheckedCreateWithoutUserRelInput = {
@@ -421,8 +444,9 @@ export type TodoUncheckedCreateWithoutUserRelInput = {
   title: string
   description: string
   completed: boolean
-  createdAt: Date | string
-  updatedAt: Date | string
+  deleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type TodoCreateOrConnectWithoutUserRelInput = {
@@ -459,6 +483,7 @@ export type TodoScalarWhereInput = {
   title?: Prisma.StringFilter<"Todo"> | string
   description?: Prisma.StringFilter<"Todo"> | string
   completed?: Prisma.BoolFilter<"Todo"> | boolean
+  deleted?: Prisma.BoolFilter<"Todo"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
   userId?: Prisma.StringFilter<"Todo"> | string
@@ -469,8 +494,9 @@ export type TodoCreateManyUserRelInput = {
   title: string
   description: string
   completed: boolean
-  createdAt: Date | string
-  updatedAt: Date | string
+  deleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type TodoUpdateWithoutUserRelInput = {
@@ -478,6 +504,7 @@ export type TodoUpdateWithoutUserRelInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -487,6 +514,7 @@ export type TodoUncheckedUpdateWithoutUserRelInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -496,6 +524,7 @@ export type TodoUncheckedUpdateManyWithoutUserRelInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -507,6 +536,7 @@ export type TodoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   title?: boolean
   description?: boolean
   completed?: boolean
+  deleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -518,6 +548,7 @@ export type TodoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   title?: boolean
   description?: boolean
   completed?: boolean
+  deleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -529,6 +560,7 @@ export type TodoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   title?: boolean
   description?: boolean
   completed?: boolean
+  deleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -540,12 +572,13 @@ export type TodoSelectScalar = {
   title?: boolean
   description?: boolean
   completed?: boolean
+  deleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
 }
 
-export type TodoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "completed" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["todo"]>
+export type TodoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "completed" | "deleted" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["todo"]>
 export type TodoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userRel?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -566,6 +599,7 @@ export type $TodoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     title: string
     description: string
     completed: boolean
+    deleted: boolean
     createdAt: Date
     updatedAt: Date
     userId: string
@@ -997,6 +1031,7 @@ export interface TodoFieldRefs {
   readonly title: Prisma.FieldRef<"Todo", 'String'>
   readonly description: Prisma.FieldRef<"Todo", 'String'>
   readonly completed: Prisma.FieldRef<"Todo", 'Boolean'>
+  readonly deleted: Prisma.FieldRef<"Todo", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Todo", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Todo", 'DateTime'>
   readonly userId: Prisma.FieldRef<"Todo", 'String'>
