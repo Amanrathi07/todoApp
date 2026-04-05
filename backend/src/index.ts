@@ -52,7 +52,6 @@ app.post("/checkChange",getTokenFromReq,async(req:NewRequest,res)=>{
 
     
     if(dbResponce.updatedAt.getTime() > lastSync){
-        console.log("send now becouse :", dbResponce)
         return res.status(200).json({
             change:true ,
             message:"pls refrech the todos"
