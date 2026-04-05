@@ -1,186 +1,169 @@
-# 🧠 Full-Stack Todo App (Offline-Ready)
+# 📝 TodoApp — Offline-First Task Manager
 
-A modern full-stack Todo application built with a scalable backend and an offline-capable frontend.
-
-This project is not a tutorial-based clone — it was built from scratch with an experimental approach, exploring multiple backend frameworks, databases, and architectural patterns before converging on a clean and scalable solution.
+A full-stack todo application built with an **offline-first architecture**. All operations work locally without internet or backend availability, and data synchronizes automatically when connectivity is restored.
 
 ---
 
-## 🚀 Tech Stack
+## 🗂️ Project Structure
 
-### Frontend
-- React + TypeScript
-- Vite
-- Tailwind CSS
-- shadcn/ui + Radix UI
-- React Router
-- Zod (validation)
-- Dexie (IndexedDB for offline storage)
-
-### Backend
-- Bun runtime
-- Express.js
-- TypeScript
-- Prisma ORM
-- PostgreSQL  (via Prisma)
-- JWT Authentication
-- Cookie-based auth
-- Express Rate Limiting
+```
+todo/
+├── frontend/       # React + TypeScript client (IndexedDB via Dexie)
+└── backend/        # Node.js + Express REST API
+```
 
 ---
 
 ## ✨ Features
 
-- ✅ Create, update, delete todos
-- 🔐 Authentication using JWT + cookies
-- 📦 Structured backend architecture
-- 💾 Local-first storage using IndexedDB
-- 🔄 Sync-ready design (local + server state)
-- ⚡ Fast development with Bun + Vite
+- ✅ Full CRUD — works entirely offline
+- 🔄 Auto-sync when internet and backend are available
+- 📡 Connection awareness — UI reflects internet and server status
+- 🔁 Background polling to push local changes and pull remote updates
+- 🛠️ Manual **Force Sync** and **Refetch** controls
+- 🔐 Auth-gated sync — sync only runs when user is authenticated
+- ⚖️ Last Write Wins (LWW) conflict resolution via `updatedAt` timestamps
+- 🗑️ Soft deletes on the backend with delta-based sync
 
 ---
 
-## 🧩 Architecture
-
-### Backend
-```
-src/
-├── controller/
-├── routes/
-├── middleware/
-├── lib/
-└── index.ts
-```
-
-- Separation of concerns (controllers, routes, middleware)
-- Scalable and production-ready structure
-- Prisma for database abstraction
-
----
+## 🧱 Tech Stack
 
 ### Frontend
+| Tool | Purpose |
+|------|---------|
+| React + TypeScript | UI framework |
+| Dexie (IndexedDB) | Local-first database |
+| localStorage | Persists `lastSyncedAt` timestamp |
+
+### Backend
+| Tool | Purpose |
+|------|---------|
+| Node.js + Express | REST API |
+| PostgreSQL / Central DB | Persistent storage |
+| Soft deletes | Safe deletion with sync support |
+
+---
+
+## ⚡ How Offline-First Works
+
+All operations (create, update, delete) happen **locally first** via IndexedDB. The backend is treated as a sync target, not the runtime source of truth.
+
+Each todo has a `status` field:
+- `"unsynced"` — modified locally, not yet pushed
+- `"synced"` — confirmed on backend
+
+---
+
+## 🔄 Sync System
+
+### Sync Conditions
+Sync runs only when **all** of the following are true:
+1. Internet connectivity is available
+2. User is authenticated
+3. Backend server is reachable
+
+### Sync Flow
 ```
-src/
-├── components/
-├── modules/        # feature-based structure
-├── hooks/
-├── context/
-├── functions/
-├── db.ts           # IndexedDB (Dexie setup)
+User action → IndexedDB (unsynced)
+                  ↓
+         Background poll (every ~5s)
+                  ↓
+         Push unsynced → backend
+                  ↓
+         Mark as synced locally
 ```
 
-- Modular architecture (not flat component mess)
-- Custom hooks + context for state handling
-- Designed for offline-first capabilities
+### On Reconnect
+```
+Client comes online
+        ↓
+Send lastSyncedAt (from localStorage)
+        ↓
+Backend checks for changes since lastSyncedAt
+        ↓
+If changes exist → force refetch
+        ↓
+Client replaces local state with backend state
+```
+
+> Push always happens **before** refetch to prevent overwriting unsaved local changes.
+
+### Polling Rates
+- **Sync poll** — more frequent, pushes local changes quickly
+- **Refetch poll** — less frequent, avoids unnecessary full pulls
 
 ---
 
-## 🔄 Offline-First Approach (Work in Progress)
+## 🧠 Conflict Resolution
 
-This app uses **Dexie (IndexedDB)** to store todos locally.
+Uses **Last Write Wins (LWW)** based on `updatedAt` timestamps.
 
-Why this matters:
-- Works without internet
-- Faster UI (no constant API calls)
-- Foundation for future sync engine
-
-Planned:
-- Background sync with backend
-- Conflict resolution strategy
-- Optimistic updates
+Simplicity is prioritized over complex merge logic. Suitable for single or small-team usage.
 
 ---
 
-## 🧪 Engineering Decisions
+## 🗑️ Delete Handling
 
-This project was built iteratively by exploring different approaches:
-
-- Evaluated **Hono vs Express** → chose Express for ecosystem and middleware flexibility
-- Tested **multiple database options (PostgreSQL, MySQL)** → standardized using Prisma ORM
-- Adopted **Bun runtime** for faster development and modern tooling
-
-This process helped in understanding real-world trade-offs instead of blindly following a fixed stack.
+Deletes are **soft-deleted on the backend** (row updated, not removed). The backend **excludes soft-deleted items** from all responses. On refetch, the client replaces its local state, naturally removing any items that no longer exist on the backend.
 
 ---
 
-## ⚙️ Setup
+## 🧰 Manual Controls
 
-### Clone Repository
+| Control | Description |
+|---------|-------------|
+| **Force Sync** | Immediately pushes all unsynced local changes to backend |
+| **Refetch** | Pulls latest state from backend and overwrites local DB |
+
+---
+
+## 🛡️ Rate Limiting
+
+| Route Type | Rate Limited |
+|------------|-------------|
+| Auth routes | ✅ Yes |
+| Mutation routes (create/update/delete) | ✅ Yes |
+| Sync polling | ❌ No — allows burst sync after offline periods |
+| Health checks | ❌ No |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- A running PostgreSQL instance (or your configured DB)
+
+### Backend
+
 ```bash
-git clone https://github.com/Amanrathi07/todoApp.git
-cd todoApp
+cd todo/backend
+npm install
+# Configure your .env (DB connection, JWT secret, etc.)
+npm run dev
 ```
 
----
-
-### Backend Setup
+### Frontend
 
 ```bash
-cd backend
-bun install
-```
-
-Create `.env` file:
-
-```
-DATABASE_URL=your_database_url
-JWT_SECRET=your_secret
-
-```
-
-Run backend:
-
-```bash
-bun run dev
+cd todo/frontend
+npm install
+npm run dev
 ```
 
 ---
 
-### Frontend Setup
+## ⚠️ Note on Dependencies
 
-```bash
-cd frontend
-bun install
-bun run dev
-```
+During development, several libraries were explored before settling on the current stack (including experiments with SQLite and alternative frameworks). Some of those packages may still be present in `package.json` but are **not actively used**. Safe to ignore — they do not affect runtime behavior.
 
 ---
 
-## 🔗 API (Example)
+## 🔮 Planned Improvements
 
-| Method | Endpoint      | Description        |
-|--------|-------------|--------------------|
-| GET    | /todos      | Get all todos      |
-| POST   | /todos      | Create todo        |
-| PUT    | /todos/:id  | Update todo        |
-| DELETE | /todos/:id  | Delete todo        |
-
----
-
-## 🔮 Future Improvements
-
-- 🔄 Full offline sync engine (like Notion)
-- ⚡ Optimistic UI updates
-- 📱 PWA support
-- 🗂️ Filters & categories
-- 🌙 Dark mode
-
----
-
-## ⚠️ Note
-
-Some dependencies (e.g., alternative frameworks or database drivers) were installed during experimentation and may not be part of the final architecture.
-
----
-
-## 👨‍💻 Author
-
-**Aman Rathi**  
-- GitHub: https://github.com/Amanrathi07  
-- LinkedIn: https://www.linkedin.com/in/amanrathi83  
-
----
-
-## 📄 License
-
-MIT License
+- [ ] Sync queue with states: `pending → syncing → failed → retrying`
+- [ ] Retry logic with exponential backoff
+- [ ] Batch multiple updates into single requests
+- [ ] Event-driven sync via WebSockets or SSE
+- [ ] Improved conflict resolution (e.g. delete always wins over edit)
