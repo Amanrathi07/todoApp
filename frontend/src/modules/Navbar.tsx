@@ -1,7 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import { Button, buttonVariants } from "../components/ui/button";
 import useAuth from "../hooks/useAuth";
-import { db } from "../db";
 import { handelLogout } from "../functions/logout";
 
 export default function Navbar({online}:{online:boolean}) {
