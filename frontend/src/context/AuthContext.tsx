@@ -1,6 +1,7 @@
 // import axios from "axios";
 import React, { createContext, useEffect, type Dispatch, type SetStateAction } from "react"
 import { useState } from "react";
+import { handelLogout } from "../functions/logout";
 
 
 type AuthContextType = {
@@ -20,11 +21,11 @@ export default function AuthProvider({children}:{children:React.ReactNode;}) {
       //  const responce = await axios.get("http://localhost:3000/v1/auth/me",{withCredentials:true}) ;
 
       const myCookie = document.cookie
-
+      
       const responce = JSON.parse(localStorage.getItem("todoAuth") as string)
 
-      
-       if(!responce && !myCookie){
+       if(!responce || !myCookie){
+        handelLogout(setAuth)
         return 
        }
        setAuth(responce)

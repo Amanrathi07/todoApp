@@ -2,19 +2,13 @@ import { Link, Outlet } from "react-router-dom";
 import { Button, buttonVariants } from "../components/ui/button";
 import useAuth from "../hooks/useAuth";
 import { db } from "../db";
+import { handelLogout } from "../functions/logout";
 
 export default function Navbar({online}:{online:boolean}) {
     const {auth,setAuth} = useAuth()
     if(!auth) null 
 
-    function handelLogout(){
-        localStorage.removeItem("todoAuth") ,
-        
-        document.cookie = "todoCookie" + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-        setAuth(null)
-        db.todos.clear()
-    }
+  
 
   return (
     <>
@@ -32,7 +26,7 @@ export default function Navbar({online}:{online:boolean}) {
                 {
                     auth ?(
                         <Button 
-                          onClick={handelLogout} 
+                          onClick={()=>handelLogout(setAuth)} 
                           variant={"destructive"}
                           className="transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                         >
