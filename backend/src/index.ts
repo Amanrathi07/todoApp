@@ -24,13 +24,6 @@ app.use(cookieParser()) ;
 
 
 
-app.get("/helthCheck",(req,res)=>{
-    return res.status(200).json({
-        message:"server is working",
-        online:true ,   
-    })
-})
-
 
 app.post("/checkChange",getTokenFromReq,async(req:NewRequest,res)=>{
     const {time} = req.body ;
@@ -70,6 +63,6 @@ app.use("/v1/auth",limiter,authRoute)
 app.use("/v1/todos",limiter,todoRouter)
 
 app.listen(3000,()=>{
-    console.log("server is running on http://localhost:3000/")
+    console.log("server is running ")
 })
 
