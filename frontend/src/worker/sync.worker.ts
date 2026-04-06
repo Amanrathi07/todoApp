@@ -3,7 +3,8 @@
 self.onmessage = (e)=>{
     const {message} = e.data ;
 
-    if(message ==="ping"){
-    self.postMessage({message:"pong"})
+    if(message ==="unsync"){
+        console.log("aman")
+    self.postMessage({message:"okk "})
 }
 }

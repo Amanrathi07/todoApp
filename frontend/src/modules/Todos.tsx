@@ -27,11 +27,14 @@ export default function Todos({status , online}:{status:string , online:boolean}
 
   
     const {auth} = useAuth();
-
+    const worker = new Worker( new URL("../worker/sync.worker.ts",import.meta.url),{type:"module"})
     useEffect(()=>{
         if(navigator.onLine && status=="unsynced" && online){
-            sendTodos()
+            worker.postMessage({message:"unsync"})
         }
+        document.addEventListener("online",()=>{
+            worker.postMessage({message:"unsync"})
+        })
     },[status,online])
 
     useEffect(()=>{

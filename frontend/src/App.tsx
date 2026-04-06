@@ -12,12 +12,6 @@ import axios from "axios";
 export default function App() {
   const [online,setOnline]=useState<boolean>(false);
 
-  const worker = new Worker(new URL("./worker/sync.worker.ts",import.meta.url),{type:"module"})
-
-  worker.postMessage({message:"ping"})
-  worker.onmessage=(e)=>{
-    console.log(e.data)
-  }
  useEffect(() => {
   const checkInterval = setInterval(async () => {
     try {
@@ -43,6 +37,7 @@ export default function App() {
   let status = "loading...";
   if (unSyncTodos) {
     status = unSyncTodos.length > 0 ? "unsynced" : "synced";
+    
   }
 
 
