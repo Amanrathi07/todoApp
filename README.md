@@ -6,7 +6,11 @@ A full-stack todo application built with an **offline-first architecture** and *
 
 ## 🗂️ Project Structure
 
-todo/ ├── frontend/       # React + TypeScript client (IndexedDB via Dexie) └── backend/        # Bun + Node.js + Express REST API
+todo/ 
+├── frontend/  
+ # React + TypeScript  client (IndexedDB via Dexie) 
+└── backend/  
+ # Bun + Node.js + Express REST API
 
 ---
 
@@ -100,13 +104,13 @@ cd todo/backend
 bun install
 # Configure your .env (DB connection, JWT secret, etc.)
 bun dev
-
+```
 Frontend
-
+```bash
 cd todo/frontend
 bun install
 bun run dev
-
+```
 
 ---
 
@@ -124,7 +128,3 @@ Improved conflict resolution (e.g., delete always wins over edit)
 
 
 ---
-
-If you want, I can **also add a small architecture diagram** in the README (ASCII or Mermaid) that clearly shows the polling + sync flow — that makes it **much more resume/impressive-ready**.  
-
-Do you want me to do that next?
