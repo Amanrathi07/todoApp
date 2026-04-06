@@ -1,13 +1,12 @@
-import { toast } from "sonner";
 import { db } from "../db";
 import { axiosInstance } from "../lib/axiosInstance";
 
 
- export async function sendTodos(auth:any):Promise<boolean|string|number>{
+ export async function sendTodos(auth:any):Promise<boolean>{
 
 
     if (!auth) {
-      return toast.error("login required");
+      return false
     }
     try {
       const todos = await db.todos
@@ -15,13 +14,15 @@ import { axiosInstance } from "../lib/axiosInstance";
         .anyOf(["unsynced", "deleted", "completedChange"])
         .toArray();
 
-      (await todos).map(async (todo) => {
+      const results = await Promise.all(todos.map(async (todo) => {
         const dbRes = await axiosInstance.post("/todos/todo", todo);
 
         if (dbRes.data) {
           if (todo.status == "unsynced") {
-            db.todos.update(todo.id, { status: "synced" });
-            db.todos.update(todo.id, { dbId: dbRes.data.dbId });
+            await db.todos.update(todo.id, { status: "synced" ,
+                dbId:dbRes.data.dbId
+             });
+            
           }
           if (todo.status == "deleted") {
             db.todos.delete(todo.id);
@@ -32,11 +33,16 @@ import { axiosInstance } from "../lib/axiosInstance";
 
           
         }
-      });
+        return true ;
+      }))
+
+      const hasFailure = results.some((r) => r === false);
+
+      return !hasFailure;
 
       return true
     } catch (error) {
-        console.log("dont know")
-        return false
+        console.log("Unexpected error:", error);
+        return false;
     }
   }
