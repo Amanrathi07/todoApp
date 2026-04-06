@@ -3,7 +3,7 @@ import { Button, buttonVariants } from "../components/ui/button";
 import useAuth from "../hooks/useAuth";
 import { handelLogout } from "../functions/logout";
 
-export default function Navbar(/*{online}:{online:boolean}*/) {
+export default function Navbar() {
     const {auth,setAuth} = useAuth()
     if(!auth) null 
 
@@ -18,9 +18,7 @@ export default function Navbar(/*{online}:{online:boolean}*/) {
                     <Link to={"/"}>Todo App</Link>
                 </h1>
             </div>
-            {/* <div>
-                { online?"online":"ofline"}
-            </div> */}
+           
             <div className="flex items-center gap-2">
                 {
                     auth ?(

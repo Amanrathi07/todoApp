@@ -2,7 +2,7 @@ import { sendTodos } from "../functions/sendTodos";
 
 
 self.onmessage = async(e)=>{
-    const {message ,auth} = e.data ;
+    const {message , auth} = e.data ;
 
     if(message ==="unsync"){
          const res:string | number | boolean = await sendTodos(auth) ;
