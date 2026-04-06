@@ -2,10 +2,10 @@ import { sendTodos } from "../functions/sendTodos";
 
 
 self.onmessage = async(e)=>{
-    const {message} = e.data ;
+    const {message ,auth} = e.data ;
 
     if(message ==="unsync"){
-         const res:string | number | boolean = await sendTodos() ;
+         const res:string | number | boolean = await sendTodos(auth) ;
          if(res){
             self.postMessage({message:"SYNC_SUCCESS"})
          }else{

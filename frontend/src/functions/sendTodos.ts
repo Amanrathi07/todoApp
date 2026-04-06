@@ -1,10 +1,14 @@
+import { toast } from "sonner";
 import { db } from "../db";
 import { axiosInstance } from "../lib/axiosInstance";
 
 
- export async function sendTodos():Promise<string | number | boolean>{
+ export async function sendTodos(auth:any):Promise<boolean|string|number>{
 
-   
+
+    if (!auth) {
+      return toast.error("login required");
+    }
     try {
       const todos = await db.todos
         .where("status")
