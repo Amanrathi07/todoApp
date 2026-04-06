@@ -1,6 +1,7 @@
+
 # 📝 TodoApp — Offline-First Task Manager
 
-A full-stack todo application built with an **offline-first architecture**. All operations work locally without internet or backend availability, and data synchronizes automatically when connectivity is restored.
+A full-stack todo application built with an **offline-first architecture** and **event-driven sync**. All operations work locally without internet or backend availability, and data synchronizes automatically when connectivity is restored.
 
 ---
 
@@ -9,7 +10,7 @@ A full-stack todo application built with an **offline-first architecture**. All 
 ```
 todo/
 ├── frontend/       # React + TypeScript client (IndexedDB via Dexie)
-└── backend/        # Node.js + Express REST API
+└── backend/        # Bun + Node.js + Express REST API
 ```
 
 ---
@@ -17,11 +18,17 @@ todo/
 ## ✨ Features
 
 - ✅ Full CRUD — works entirely offline
+<<<<<<< HEAD
 - 🔄 Auto-sync when internet  available
 
 - 🔁 Background polling pull remote updates
+=======
+- 🔄 Auto-sync when internet and backend are available
+- 📡 Connection awareness — UI reflects internet and server status
+- 🔁 Event-driven sync with minimal polling
+>>>>>>> 04abdf9 (update readme.md)
 - 🛠️ Manual **Force Sync** and **Refetch** controls
-- 🔐 Auth-gated sync — sync only runs when user is authenticated
+- 🔐 Auth-gated sync — runs only when user is authenticated
 - ⚖️ Last Write Wins (LWW) conflict resolution via `updatedAt` timestamps
 - 🗑️ Soft deletes on the backend with delta-based sync
 
@@ -34,12 +41,12 @@ todo/
 |------|---------|
 | React + TypeScript | UI framework |
 | Dexie (IndexedDB) | Local-first database |
-| localStorage | Persists `lastSyncedAt` timestamp |
+| localStorage | Stores `lastSyncedAt` timestamp for incremental sync |
 
 ### Backend
 | Tool | Purpose |
 |------|---------|
-| Node.js + Express | REST API |
+| Bun + Node.js + Express | REST API runtime |
 | PostgreSQL / Central DB | Persistent storage |
 | Soft deletes | Safe deletion with sync support |
 
@@ -55,6 +62,7 @@ Each todo has a `status` field:
 - `"deleted"` — deleted locally if synced to backend
 ---
 
+<<<<<<< HEAD
 ## 🔄 Sync System
 
 ### Sync Conditions
@@ -62,9 +70,18 @@ Sync runs only when **all** of the following are true:
 1. Internet connectivity is available
 2. User is authenticated
 
+=======
+## 🔄 Event-Driven Sync System
+>>>>>>> 04abdf9 (update readme.md)
 
 ### Sync Flow
+- A single **polling request** sends `lastSyncedAt` timestamp to the backend.
+- Backend returns **only changes since the last sync**.
+- If the backend dataset is too large, a **refetch via transaction** is triggered to prevent data loss.
+- Local unsynced changes are always **pushed first** before refetching from backend.
+
 ```
+<<<<<<< HEAD
 User action → IndexedDB (unsynced)
                   ↓
          Background poll (every ~5s)
@@ -88,20 +105,35 @@ Client replaces local state with backend state (by tranction so no data lose)
 ```
 
 
+=======
+Client → IndexedDB (unsynced)
+          ↓
+Push local changes → backend
+          ↓
+Send lastSyncedAt → backend
+          ↓
+Receive changes → update local DB
+```
+
+### Key Benefits
+- Reduces unnecessary data transfer
+- Guarantees no data loss during large backend updates
+- Avoids overwriting unsynced local changes
+- Scales efficiently for growing databases
+>>>>>>> 04abdf9 (update readme.md)
 
 ---
 
 ## 🧠 Conflict Resolution
 
-Uses **Last Write Wins (LWW)** based on `updatedAt` timestamps.
-
-Simplicity is prioritized over complex merge logic. Suitable for single or small-team usage.
+Uses **Last Write Wins (LWW)** based on `updatedAt` timestamps.  
+Simple and effective for single or small-team usage.
 
 ---
 
 ## 🗑️ Delete Handling
 
-Deletes are **soft-deleted on the backend** (row updated, not removed). The backend **excludes soft-deleted items** from all responses. On refetch, the client replaces its local state, naturally removing any items that no longer exist on the backend.
+Deletes are **soft-deleted on the backend**. Soft-deleted items are excluded from responses. On refetch, the client replaces its local state, naturally removing deleted items.
 
 ---
 
@@ -110,6 +142,7 @@ Deletes are **soft-deleted on the backend** (row updated, not removed). The back
 | Control | Description |
 |---------|-------------|
 | **Force Sync** | Immediately pushes all unsynced local changes to backend |
+<<<<<<< HEAD
 | **Refetch** | Pulls latest state from backend and overwrites local DB |
 
 ---
@@ -122,14 +155,23 @@ Deletes are **soft-deleted on the backend** (row updated, not removed). The back
 | Mutation routes (create/update/delete) | ✅ Yes |
 | Sync polling | ❌ No — allows burst sync after offline periods |
 
+=======
+| **Refetch** | Pulls latest state from backend and overwrites local DB if needed |
+>>>>>>> 04abdf9 (update readme.md)
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+<<<<<<< HEAD
 - Bun
 - A running PostgreSQL instance (or your configured DB)
+=======
+- Bun 1.0+
+- Node.js 18+ (optional, for non-Bun scripts)
+- Running PostgreSQL instance (or configured DB)
+>>>>>>> 04abdf9 (update readme.md)
 
 ### Backend
 
@@ -137,8 +179,12 @@ Deletes are **soft-deleted on the backend** (row updated, not removed). The back
 cd todo/backend
 bun install
 # Configure your .env (DB connection, JWT secret, etc.)
+<<<<<<< HEAD
 bun run prisma:dev
 bun run dev
+=======
+bun dev
+>>>>>>> 04abdf9 (update readme.md)
 ```
 
 ### Frontend
@@ -151,16 +197,10 @@ bun run dev
 
 ---
 
-## ⚠️ Note on Dependencies
-
-During development, several libraries were explored before settling on the current stack (including experiments with SQLite and alternative frameworks). Some of those packages may still be present in `package.json` but are **not actively used**. Safe to ignore — they do not affect runtime behavior.
-
----
-
 ## 🔮 Planned Improvements
 
-- [ ] Sync queue with states: `pending → syncing → failed → retrying`
+- [ ] Event-driven sync via WebSockets or SSE for real-time updates
+- [ ] Sync queue states: `pending → syncing → failed → retrying`
 - [ ] Retry logic with exponential backoff
 - [ ] Batch multiple updates into single requests
-- [ ] Event-driven sync via WebSockets or SSE
-- [ ] Improved conflict resolution (e.g. delete always wins over edit)
+- [ ] Improved conflict resolution (e.g., delete always wins over edit)
