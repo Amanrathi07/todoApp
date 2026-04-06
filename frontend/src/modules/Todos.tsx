@@ -2,96 +2,113 @@ import { Button } from "../components/ui/button";
 import { db } from "../db";
 import { AddTodo } from "./AddTodo";
 import ShowData from "./ShowData";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { refetchTodos } from "../functions/refetchTodos";
 import useAuth from "../hooks/useAuth";
 import { toast } from "sonner";
 import { axiosInstance } from "../lib/axiosInstance";
 import { checkChange } from "../functions/checkChange";
+import { sendTodos } from "../functions/sendTodos";
 
-
-export interface todoResType{
-    title:string ,
-    description:string,
-    completed:boolean ,
-    createdAt:Date,
-    updatedAt:Date,
-    id:string ,
-    status:"synced"
+export interface todoResType {
+  title: string;
+  description: string;
+  completed: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  id: string;
+  status: "synced";
 }
 
+export default function Todos({ status }: { status: string }) {
+  const { auth } = useAuth();
 
+    const workerRef = useRef<Worker | null>(null)
 
-export default function Todos({status , online}:{status:string , online:boolean}) {
+useEffect(() => {
+  workerRef.current = new Worker(
+    new URL("../worker/sync.worker.ts", import.meta.url),
+    { type: "module" }
+  )
 
+  return () => {
+    workerRef.current?.terminate()
+  }
+}, [])
 
   
-    const {auth} = useAuth();
-    const worker = new Worker( new URL("../worker/sync.worker.ts",import.meta.url),{type:"module"})
-    useEffect(()=>{
-        if(navigator.onLine && status=="unsynced" && online){
-            worker.postMessage({message:"unsync"})
-        }
-        document.addEventListener("online",()=>{
-            worker.postMessage({message:"unsync"})
-        })
-    },[status,online])
 
-    useEffect(()=>{
-        let checkInterval:null|number = null ;
-       
-        if(!!auth){
-            checkInterval = setInterval(() => {
-            checkChange()
-        }, 5000);
-        }
+  useEffect(() => {
 
-       return()=>{
-       if(checkInterval){
-        clearInterval(checkInterval)
-       }
+     const worker = workerRef.current
+  if (!worker) return
 
-       }
-    },[auth])
-    async function sendTodos(){
-        if(!auth){
-            return toast.error("login required")
-        }
-        try {
-            const todos =await db.todos.where("status").anyOf(["unsynced","deleted","completedChange"]).toArray() ;
+    const handleOnline = () => {
 
-            (await todos).map(async(todo)=>{
-                const dbRes =await axiosInstance.post("/todos/todo",todo)
 
-                
-                if(dbRes.data){
-                    if(todo.status == "unsynced"){
-                    db.todos.update(todo.id ,{status:"synced"})
-                    db.todos.update(todo.id ,{dbId:dbRes.data.dbId})
-                }
-                if(todo.status == "deleted"){
-                    db.todos.delete(todo.id )
-                }
-                if(todo.status=="completedChange"){
-                    db.todos.update(todo.id ,{status:"synced"})
-                }
-                }
-            })
-            
-        } catch (error) {
-            
-        }
-    } 
+
+      if (status === "unsynced") {
+        worker.postMessage({ message: "unsync" });
+      }
+    };
+
+    window.addEventListener("online", handleOnline);
+
+    if (navigator.onLine && status === "unsynced") {
+      worker.postMessage({ message: "unsync" });
+    }
 
     
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+    };
+  }, [status]);
+
+
+  useEffect(()=>{
+
+     const worker = workerRef.current
+  if (!worker) return
+
+    worker.onmessage = (e) => {
+      const { type } = e.data;
+
+      if (type === "SYNC_SUCCESS") {
+        status = "synced"
+      }
+
+      if (type === "SYNC_FAILED") {
+        status = "unsynced"
+      }
+    };
+  },[])
+
+  useEffect(() => {
+    let checkInterval: null | number = null;
+
+    if (!!auth) {
+      checkInterval = setInterval(() => {
+        checkChange();
+      }, 5000);
+    }
+
+    return () => {
+      if (checkInterval) {
+        clearInterval(checkInterval);
+      }
+    };
+  }, [auth]);
+ 
+
   return (
     <div className=" flex flex-col gap-10 items-center justify-center">
-          <div className="flex gap-4">
-            <Button onClick={sendTodos}>{status}</Button>
-            <Button onClick={refetchTodos}>refetch</Button>
-          </div>
-          <AddTodo />
-          <ShowData />
+      <div className="flex gap-4">
+        <Button onClick={()=>sendTodos()}>{status}</Button>
+        <Button onClick={refetchTodos}>refetch</Button>
+      </div>
+      <AddTodo />
+      <ShowData />
     </div>
-  )
+  );
 }

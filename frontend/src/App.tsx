@@ -12,20 +12,20 @@ import axios from "axios";
 export default function App() {
   const [online,setOnline]=useState<boolean>(false);
 
- useEffect(() => {
-  const checkInterval = setInterval(async () => {
-    try {
-      const res = await axios.get(`${import.meta.env.VITE_API_BACKEND_URL}/helthCheck`,{timeout:3000});
-      setOnline(res.data.online);
-    } catch (err) {
-      setOnline(false); 
-    }
-  }, 5000);
+//  useEffect(() => {
+//   const checkInterval = setInterval(async () => {
+//     try {
+//       const res = await axios.get(`${import.meta.env.VITE_API_BACKEND_URL}/helthCheck`,{timeout:3000});
+//       setOnline(res.data.online);
+//     } catch (err) {
+//       setOnline(false); 
+//     }
+//   }, 5000);
 
-  return () => {
-    clearInterval(checkInterval);
-  };
-}, []);
+//   return () => {
+//     clearInterval(checkInterval);
+//   };
+// }, []);
 
   const unSyncTodos = useLiveQuery(async () => {
     return await db.todos
@@ -37,15 +37,15 @@ export default function App() {
   let status = "loading...";
   if (unSyncTodos) {
     status = unSyncTodos.length > 0 ? "unsynced" : "synced";
-    
+
   }
 
 
    
   return (
     <Routes>
-        <Route path={"/"} element={<Navbar online={online}/>}>
-        <Route path="/" element={ <Todos online={online} status={status}/> } />
+        <Route path={"/"} element={<Navbar />}>
+        <Route path="/" element={ <Todos  status={status}/> } />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
         </Route>
