@@ -22,18 +22,18 @@ export default function Todos({ status }: { status: string }) {
   const { auth } = useAuth();
 
   const workerRef = useRef<Worker | null>(null);
-
+    // make a cranker
   useEffect(() => {
     workerRef.current = new Worker(
       new URL("../worker/sync.worker.ts", import.meta.url),
       { type: "module" },
     );
-
     return () => {
       workerRef.current?.terminate();
     };
   }, []);
 
+  // call a cranker if status is unsync and the vrowser if come online after ofline
   useEffect(() => {
     const worker = workerRef.current;
     if (!worker) return;
@@ -55,6 +55,7 @@ export default function Todos({ status }: { status: string }) {
     };
   }, [status]);
 
+ // listion to the cranker
   useEffect(() => {
     const worker = workerRef.current;
     if (!worker) return;
@@ -71,6 +72,7 @@ export default function Todos({ status }: { status: string }) {
       }
     };
   }, []);
+
 
   useEffect(() => {
     let checkInterval: null | number = null;
