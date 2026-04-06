@@ -17,9 +17,9 @@ todo/
 ## ✨ Features
 
 - ✅ Full CRUD — works entirely offline
-- 🔄 Auto-sync when internet and backend are available
-- 📡 Connection awareness — UI reflects internet and server status
-- 🔁 Background polling to push local changes and pull remote updates
+- 🔄 Auto-sync when internet  available
+
+- 🔁 Background polling pull remote updates
 - 🛠️ Manual **Force Sync** and **Refetch** controls
 - 🔐 Auth-gated sync — sync only runs when user is authenticated
 - ⚖️ Last Write Wins (LWW) conflict resolution via `updatedAt` timestamps
@@ -52,7 +52,7 @@ All operations (create, update, delete) happen **locally first** via IndexedDB. 
 Each todo has a `status` field:
 - `"unsynced"` — modified locally, not yet pushed
 - `"synced"` — confirmed on backend
-
+- `"deleted"` — deleted locally if synced to backend
 ---
 
 ## 🔄 Sync System
@@ -61,7 +61,7 @@ Each todo has a `status` field:
 Sync runs only when **all** of the following are true:
 1. Internet connectivity is available
 2. User is authenticated
-3. Backend server is reachable
+
 
 ### Sync Flow
 ```
@@ -69,7 +69,7 @@ User action → IndexedDB (unsynced)
                   ↓
          Background poll (every ~5s)
                   ↓
-         Push unsynced → backend
+         Push unsynced → backend(event based by worker)
                   ↓
          Mark as synced locally
 ```
@@ -82,16 +82,12 @@ Send lastSyncedAt (from localStorage)
         ↓
 Backend checks for changes since lastSyncedAt
         ↓
-If changes exist → force refetch
+If changes exist → force refetch 
         ↓
-Client replaces local state with backend state
+Client replaces local state with backend state (by tranction so no data lose)
 ```
 
-> Push always happens **before** refetch to prevent overwriting unsaved local changes.
 
-### Polling Rates
-- **Sync poll** — more frequent, pushes local changes quickly
-- **Refetch poll** — less frequent, avoids unnecessary full pulls
 
 ---
 
@@ -125,31 +121,32 @@ Deletes are **soft-deleted on the backend** (row updated, not removed). The back
 | Auth routes | ✅ Yes |
 | Mutation routes (create/update/delete) | ✅ Yes |
 | Sync polling | ❌ No — allows burst sync after offline periods |
-| Health checks | ❌ No |
+
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+
+- Bun
 - A running PostgreSQL instance (or your configured DB)
 
 ### Backend
 
 ```bash
 cd todo/backend
-npm install
+bun install
 # Configure your .env (DB connection, JWT secret, etc.)
-npm run dev
+bun run prisma:dev
+bun run dev
 ```
 
 ### Frontend
 
 ```bash
 cd todo/frontend
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 ---
