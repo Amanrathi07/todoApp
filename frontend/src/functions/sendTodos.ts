@@ -40,7 +40,6 @@ import { axiosInstance } from "../lib/axiosInstance";
 
       return !hasFailure;
 
-      return true
     } catch (error) {
         console.log("Unexpected error:", error);
         return false;
