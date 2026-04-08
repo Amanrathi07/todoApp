@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { refetchTodos } from "../functions/refetchTodos";
 import { axiosInstance } from "../lib/axiosInstance";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../firebase/firebase";
 
 export default function Signin() {
   const [isPending, startTransition] = useTransition();
@@ -35,6 +37,15 @@ export default function Signin() {
         toast.error(error.response?.data?.message || "Something went wrong");
       }
     });
+  }
+
+  async function handelGoogle() {
+    try {
+      const result =await signInWithPopup(auth,provider) ;
+      console.log(result.user)
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -80,6 +91,8 @@ export default function Signin() {
         </Button>
       
         </form>
+        <br />
+        <Button onClick={handelGoogle} className="w-full">google</Button>
       </div>
     </div>
   );
