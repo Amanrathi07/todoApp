@@ -42,7 +42,12 @@ export default function Signin() {
   async function handelGoogle() {
     try {
       const result =await signInWithPopup(auth,provider) ;
-      console.log(result.user)
+      const token = await result.user.getIdToken() ;
+      const response = await axiosInstance.post("/auth/googleAuth",{
+        token 
+      });
+
+
     } catch (error) {
       console.error(error);
     }
