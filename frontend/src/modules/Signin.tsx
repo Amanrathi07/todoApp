@@ -98,7 +98,7 @@ export default function Signin() {
       
         </form>
         <br />
-        <Button onClick={handelGoogle} className="w-full">google</Button>
+        {/* <Button onClick={handelGoogle} className="w-full">google</Button> */}
       </div>
     </div>
   );
