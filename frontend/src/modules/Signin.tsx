@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { refetchTodos } from "../functions/refetchTodos";
 import { axiosInstance } from "../lib/axiosInstance";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, signInWithRedirect } from "firebase/auth";
 import { auth, provider } from "../firebase/firebase";
 
 export default function Signin() {
@@ -41,12 +41,13 @@ export default function Signin() {
 
   async function handelGoogle() {
     try {
-      const result =await signInWithPopup(auth,provider) ;
-      const token = await result.user.getIdToken() ;
+      const result = await signInWithPopup(auth,provider) ;
+      const token = await result.user.getIdToken()
       const response = await axiosInstance.post("/auth/googleAuth",{
         token 
       });
 
+      console.log("response is :", response.data)
 
     } catch (error) {
       console.error(error);

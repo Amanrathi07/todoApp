@@ -131,3 +131,13 @@ export const Me = async (req: NewRequest, res: Response) => {
     email: dbResponce.email,
   });
 };
+
+
+
+export const handelGoogle =(req: NewRequest, res: Response)=>{
+  const {token} = req.body ;
+  res.status(200).json({
+    message:"i get the token ",
+    token
+  })
+} 
