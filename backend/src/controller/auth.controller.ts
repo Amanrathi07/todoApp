@@ -4,11 +4,9 @@ import bcrypt from "bcryptjs";
 import { jwtGenerate } from "../lib/jwt_generate";
 import type { NewRequest } from "../middleware/auth.middleware";
 import { signInSchema, signUpSchema } from "../zodSchema/auth.zod";
+import admin from "firebase-admin";
 
-import admin from "firebase-admin"
-
-
-
+  
 
 
 export const SignIn = async (req: Request, res: Response) => {
@@ -40,6 +38,8 @@ export const SignIn = async (req: Request, res: Response) => {
     });
   }
 
+  if (!dbResponce.password)
+    return res.status(401).json({ message: "no password , try with google" });
   const isPassword = await bcrypt.compare(password, dbResponce?.password);
 
   if (!isPassword) {
@@ -137,36 +137,58 @@ export const Me = async (req: NewRequest, res: Response) => {
   });
 };
 
-
-
-
-export const handelGoogle = async (req: NewRequest, res: Response)=>{
-  const {token} = req.body ;
-  if(!token){
+export const handelGoogle = async (req: NewRequest, res: Response) => {
+  const { token } = req.body;
+  if (!token) {
     return res.status(401).json({
-      message:"No token provided"
-    })
+      message: "No token provided",
+    });
   }
 
   try {
-    const decoded = await admin.auth().verifyIdToken(token) ; 
+    const decoded = await admin.auth().verifyIdToken(token);
     const dbResponce = await prismaClient.user.findFirst({
-      where:{
-        email: decoded.email
-      }
-    })
+      where: {
+        email: decoded.email,
+      },
+    });
 
-    if(!dbResponce){
+    console.log(dbResponce)
+    if (!dbResponce) {
+      console.log("make a new accoutn")
       const newUser = await prismaClient.user.create({
-        data:{
-          name:decoded.name ,
-          email : decoded.email as string ,
+        data: {
+          name: decoded.name,
+          email: decoded.email as string,
+        },
+      });
 
-        }
-      }) 
+      const jwt = jwtGenerate(newUser.id);
+
+      return res
+        .cookie("todoCookie", jwt)
+        .status(201)
+        .json({
+          message: "account created successfully.",
+          auth: {
+            name: newUser.name,
+            email: newUser.email,
+          },
+        });
+    }else{
+      console.log("finding the account")
+      
+      const jwt = jwtGenerate(dbResponce.id);
+  return res
+    .cookie("todoCookie", jwt)
+    .status(200)
+    .json({
+      message: "Signed in successfully.",
+      auth: {
+        name: dbResponce.name,
+        email: dbResponce.email,
+      },
+    });
     }
-  } catch (error) {
-    
-  }
-
-} 
+  } catch (error) {}
+};

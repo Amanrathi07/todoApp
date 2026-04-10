@@ -7,6 +7,7 @@ import todoRouter from "./routes/todo.route";
 import { limiter } from "./middleware/ratelimte";
 import { getTokenFromReq, type NewRequest } from "./middleware/auth.middleware";
 import { prismaClient } from "./lib/prisma";
+import morgan from "morgan"
 
 dotenv.config()
 const app = express() ;
@@ -17,6 +18,8 @@ app.use(cors({
     origin: process.env.FRONTEND_URL, 
     credentials: true
 }));
+
+app.use(morgan("dev"))
 
 app.use(express.json());
 

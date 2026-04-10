@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { refetchTodos } from "../functions/refetchTodos";
 import { axiosInstance } from "../lib/axiosInstance";
-import { signInWithPopup, signInWithRedirect } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase/firebase";
 
 export default function Signin() {
@@ -43,14 +43,20 @@ export default function Signin() {
     try {
       const result = await signInWithPopup(auth,provider) ;
       const token = await result.user.getIdToken()
-      const response = await axiosInstance.post("/auth/googleAuth",{
+      const responce = await axiosInstance.post("/auth/googleAuth",{
         token 
       });
+      localStorage.setItem("todoAuth", JSON.stringify(responce.data.auth));
+        
+        setAuth(responce.data.auth);
 
-      console.log("response is :", response.data)
+        toast.success(responce.data.message);
+        refetchTodos();
+        router("/");
+      console.log("response is :", responce.data)
 
-    } catch (error) {
-      console.error(error);
+    } catch (error:any) {
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   }
 
