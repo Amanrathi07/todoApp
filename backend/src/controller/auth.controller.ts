@@ -3,8 +3,12 @@ import { prismaClient } from "../lib/prisma";
 import bcrypt from "bcryptjs";
 import { jwtGenerate } from "../lib/jwt_generate";
 import type { NewRequest } from "../middleware/auth.middleware";
-import z from "zod";
 import { signInSchema, signUpSchema } from "../zodSchema/auth.zod";
+
+import admin from "firebase-admin"
+
+
+
 
 export const SignIn = async (req: Request, res: Response) => {
   const result = signInSchema.safeParse(req.body);
@@ -134,10 +138,19 @@ export const Me = async (req: NewRequest, res: Response) => {
 
 
 
-export const handelGoogle =(req: NewRequest, res: Response)=>{
+
+export const handelGoogle = async (req: NewRequest, res: Response)=>{
   const {token} = req.body ;
-  res.status(200).json({
-    message:"i get the token ",
-    token
-  })
+  if(!token){
+    return res.status(401).json({
+      message:"No token provided"
+    })
+  }
+
+  try {
+    const decoded = await admin.auth().verifyIdToken(token) ; 
+  } catch (error) {
+    
+  }
+
 } 
