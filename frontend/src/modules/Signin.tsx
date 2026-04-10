@@ -46,14 +46,13 @@ export default function Signin() {
       const responce = await axiosInstance.post("/auth/googleAuth",{
         token 
       });
-      localStorage.setItem("todoAuth", JSON.stringify(responce.data.auth));
-        
+      
+        localStorage.setItem("todoAuth", JSON.stringify(responce.data.auth));
         setAuth(responce.data.auth);
 
         toast.success(responce.data.message);
         refetchTodos();
         router("/");
-      console.log("response is :", responce.data)
 
     } catch (error:any) {
       toast.error(error.response?.data?.message || "Something went wrong");

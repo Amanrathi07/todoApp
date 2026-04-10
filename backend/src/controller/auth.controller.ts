@@ -5,8 +5,12 @@ import { jwtGenerate } from "../lib/jwt_generate";
 import type { NewRequest } from "../middleware/auth.middleware";
 import { signInSchema, signUpSchema } from "../zodSchema/auth.zod";
 import admin from "firebase-admin";
+import { firebaseSecret } from "../../secret/adminSecret";
 
-  
+admin.initializeApp({
+  //@ts-ignore
+  credential: admin.credential.cert(firebaseSecret),
+});
 
 
 export const SignIn = async (req: Request, res: Response) => {
@@ -153,9 +157,7 @@ export const handelGoogle = async (req: NewRequest, res: Response) => {
       },
     });
 
-    console.log(dbResponce)
     if (!dbResponce) {
-      console.log("make a new accoutn")
       const newUser = await prismaClient.user.create({
         data: {
           name: decoded.name,
@@ -176,7 +178,6 @@ export const handelGoogle = async (req: NewRequest, res: Response) => {
           },
         });
     }else{
-      console.log("finding the account")
       
       const jwt = jwtGenerate(dbResponce.id);
   return res
@@ -190,5 +191,12 @@ export const handelGoogle = async (req: NewRequest, res: Response) => {
       },
     });
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error) ;
+    
+    return res.status(400).json({
+      message:"internal server error"
+    })
+    
+  }
 };
