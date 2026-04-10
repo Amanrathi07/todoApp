@@ -11,6 +11,6 @@ route.post("/signin",SignIn);
 
 route.get("/me",getTokenFromReq,Me)
 
-route.post("googleAuth",handelGoogle)
+route.post("/googleAuth",handelGoogle)
 
 export default route;
