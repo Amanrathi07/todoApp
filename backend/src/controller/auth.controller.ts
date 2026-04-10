@@ -10,6 +10,7 @@ import admin from "firebase-admin"
 
 
 
+
 export const SignIn = async (req: Request, res: Response) => {
   const result = signInSchema.safeParse(req.body);
 
@@ -149,6 +150,21 @@ export const handelGoogle = async (req: NewRequest, res: Response)=>{
 
   try {
     const decoded = await admin.auth().verifyIdToken(token) ; 
+    const dbResponce = await prismaClient.user.findFirst({
+      where:{
+        email: decoded.email
+      }
+    })
+
+    if(!dbResponce){
+      const newUser = await prismaClient.user.create({
+        data:{
+          name:decoded.name ,
+          email : decoded.email as string ,
+
+        }
+      }) 
+    }
   } catch (error) {
     
   }
