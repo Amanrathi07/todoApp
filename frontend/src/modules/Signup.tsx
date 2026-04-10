@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { refetchTodos } from "../functions/refetchTodos";
 import { axiosInstance } from "../lib/axiosInstance";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../firebase/firebase";
 
 export default function Signup() {
   const [isPending, startTransition] = useTransition();
@@ -33,6 +35,26 @@ export default function Signup() {
       }
     });
   }
+
+    async function handelGoogle() {
+      try {
+        const result = await signInWithPopup(auth,provider) ;
+        const token = await result.user.getIdToken()
+        const responce = await axiosInstance.post("/auth/googleAuth",{
+          token 
+        });
+        
+          localStorage.setItem("todoAuth", JSON.stringify(responce.data.auth));
+          setAuth(responce.data.auth);
+  
+          toast.success(responce.data.message);
+          refetchTodos();
+          router("/");
+  
+      } catch (error:any) {
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
+    }
 
   return (
     <div className="flex min-h-dvh items-center justify-center bg-white px-4">
@@ -81,6 +103,8 @@ export default function Signup() {
         </Button>
       
         </form>
+        <br />
+        <Button onClick={handelGoogle} className="w-full">google</Button>
       </div>
     </div>
   );
