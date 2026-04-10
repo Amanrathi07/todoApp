@@ -47,7 +47,6 @@ export default function Signin() {
         token 
       });
 
-      console.log(response.data)
 
     } catch (error) {
       console.error(error);
