@@ -12,4 +12,4 @@ RUN bun prisma generate
 
 EXPOSE 3000
 
-CMD [ "bun","run","start"]
+CMD ["sh" ,"-c" , "bun run start"]

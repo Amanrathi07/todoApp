@@ -18,12 +18,14 @@ services:
     restart: always
     depends_on:
       - db
-    env_file:
-      - ./backend/.env
+    environment:
+      FRONTEND_URL: http://localhost:5173
+      SECRET: mysecretpassword
+      DATABASE_URL: postgresql://postgres:mysecretpassword@localhost:5432/mydatabase
     ports:
       - "3000:3000"
   
-    command: sh -c "bun run start"
+    command: sh -c bun run start
 
   frontend:
     build: ./frontend
