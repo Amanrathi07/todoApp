@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+
+  backend_todo:
+    build: ./backend
+    container_name: backend_todo
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://postgres:mysecretpassword@db:5432/mydatabase
+      FRONTEND_URL: http://todo_frontend:5173
+      SECRET: s4FqUKYhgddKesP6GV0A3k6McGDYArcG
+
+  todo_frontend:
+    build: ./frontend
+    container_name: todo_frontend
+    restart: always
+    depends_on:
+      - backend_todo
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_BACKEND_URL: http://backend_todo:3000
