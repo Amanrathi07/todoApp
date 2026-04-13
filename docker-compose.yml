@@ -22,7 +22,7 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: postgresql://postgres:mysecretpassword@db:5432/mydatabase
-      FRONTEND_URL: http://todo_frontend:5173
+      
       SECRET: s4FqUKYhgddKesP6GV0A3k6McGDYArcG
 
   todo_frontend:
@@ -34,4 +34,4 @@ services:
     ports:
       - "5173:5173"
     environment:
-      VITE_API_BACKEND_URL: http://backend_todo:3000
+      VITE_API_BACKEND_URL: http://localhost:3000
