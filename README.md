@@ -1,21 +1,18 @@
 # 📝 TodoApp — Offline-First Task Manager
-
 A full-stack todo application built with an **offline-first architecture** and **incremental polling sync**. All operations work locally without internet, and data synchronizes automatically when connectivity is restored.
 
 ---
 
 ## 🗂️ Project Structure
-
+```
 todo/ 
-├── frontend/  
- # React + TypeScript  client (IndexedDB via Dexie) 
-└── backend/  
- # Bun + Node.js + Express REST API
+├── frontend/       # React + TypeScript client (IndexedDB via Dexie) 
+└── backend/        # Bun + Node.js + Express REST API
+```
 
 ---
 
 ## ✨ Features
-
 - ✅ Full CRUD — works entirely offline
 - 🔄 Incremental polling sync — safe updates without data loss
 - 📡 Connection awareness — UI reflects internet and server status
@@ -45,7 +42,6 @@ todo/
 ---
 
 ## ⚡ How Offline-First Works
-
 All operations (create, update, delete) happen **locally first** via IndexedDB. The backend is treated as a sync target.
 
 Each todo has a `status` field:
@@ -54,12 +50,16 @@ Each todo has a `status` field:
 - `"deleted"` — deleted locally after syncing to backend
 
 ### Incremental Polling Sync
-
 - **Frontend**: Push local unsynced changes → send `lastSyncedAt` → fetch only backend changes since last sync  
 - **Backend**: Compare `lastSyncedAt` with `updatedAt` of records → return only new/updated rows  
 - **Safe Refetch**: If dataset changed significantly, replace local state in a transaction to prevent data loss
 
-Client → IndexedDB (unsynced) ↓ Push local changes → backend ↓ Send lastSyncedAt → backend ↓ Receive changes → update local DB
+```
+Client → IndexedDB (unsynced)
+       ↓ Push local changes → backend
+       ↓ Send lastSyncedAt → backend
+       ↓ Receive changes → update local DB
+```
 
 ### Key Benefits
 - Reduces unnecessary data transfer
@@ -70,19 +70,16 @@ Client → IndexedDB (unsynced) ↓ Push local changes → backend ↓ Send last
 ---
 
 ## 🧠 Conflict Resolution
-
 Uses **Last Write Wins (LWW)** based on `updatedAt` timestamps. Simple and effective for single or small-team usage.
 
 ---
 
 ## 🗑️ Delete Handling
-
 Deletes are **soft-deleted on the backend**. Soft-deleted items are excluded from responses. On refetch, the client replaces its local state, naturally removing deleted items.
 
 ---
 
 ## 🧰 Manual Controls
-
 | Control | Description |
 |---------|-------------|
 | **Force Sync** | Immediately pushes all unsynced local changes to backend |
@@ -97,15 +94,24 @@ Deletes are **soft-deleted on the backend**. Soft-deleted items are excluded fro
 - Node.js 18+ (optional, for non-Bun scripts)
 - Running PostgreSQL instance (or configured DB)
 
-### Backend
+### 🐳 Docker (Recommended)
+The easiest way to run the full stack — no need to install Bun or PostgreSQL locally.
 
+```bash
+sudo docker compose up --build
+```
+
+This will build and start all services (frontend, backend, database) in one command.
+
+### Backend
 ```bash
 cd todo/backend
 bun install
 # Configure your .env (DB connection, JWT secret, etc.)
 bun dev
 ```
-Frontend
+
+### Frontend
 ```bash
 cd todo/frontend
 bun install
@@ -114,17 +120,9 @@ bun run dev
 
 ---
 
-🔮 Planned Improvements
-
-Event-driven sync via WebSockets or SSE for real-time updates (done ✅)
-
-Sync queue states: pending → syncing → failed → retrying  (done ✅)
-
-Retry logic with exponential backoff   (done ✅)
-
-Batch multiple updates into single requests   (done ✅)
-
-Improved conflict resolution (e.g., delete always wins over edit)  (done ✅)
-
-
----
+## 🔮 Planned Improvements
+- Event-driven sync via WebSockets or SSE for real-time updates ✅
+- Sync queue states: pending → syncing → failed → retrying ✅
+- Retry logic with exponential backoff ✅
+- Batch multiple updates into single requests ✅
+- Improved conflict resolution (e.g., delete always wins over edit) ✅
