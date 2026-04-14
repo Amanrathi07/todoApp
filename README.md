@@ -118,13 +118,13 @@ bun run dev
 
 Event-driven sync via WebSockets or SSE for real-time updates (done ✅)
 
-Sync queue states: pending → syncing → failed → retrying
+Sync queue states: pending → syncing → failed → retrying  (done ✅)
 
-Retry logic with exponential backoff
+Retry logic with exponential backoff   (done ✅)
 
-Batch multiple updates into single requests
+Batch multiple updates into single requests   (done ✅)
 
-Improved conflict resolution (e.g., delete always wins over edit)
+Improved conflict resolution (e.g., delete always wins over edit)  (done ✅)
 
 
 ---
