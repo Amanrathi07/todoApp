@@ -116,7 +116,7 @@ bun run dev
 
 🔮 Planned Improvements
 
-Event-driven sync via WebSockets or SSE for real-time updates
+Event-driven sync via WebSockets or SSE for real-time updates (done ✅)
 
 Sync queue states: pending → syncing → failed → retrying
 
