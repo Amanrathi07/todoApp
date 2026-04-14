@@ -108,7 +108,7 @@ This will build and start all services (frontend, backend, database) in one comm
 cd todo/backend
 bun install
 # Configure your .env (DB connection, JWT secret, etc.)
-bun dev
+bun run dev
 ```
 
 ### Frontend
