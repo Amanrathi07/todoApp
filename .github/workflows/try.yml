@@ -10,4 +10,5 @@ jobs:
             - name: print my name 
               run : echo Aman kumar rathi
 
-            
+            - name : print try 
+              run  : echo again 
