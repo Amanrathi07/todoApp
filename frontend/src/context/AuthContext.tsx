@@ -20,11 +20,16 @@ export default function AuthProvider({children}:{children:React.ReactNode;}) {
     async function checkAuth() {
       //  const responce = await axios.get("http://localhost:3000/v1/auth/me",{withCredentials:true}) ;
 
-      const myCookie = document.cookie
+      // const myCookie = document.cookie
       
       const responce = JSON.parse(localStorage.getItem("todoAuth") as string)
 
-       if(!responce || !myCookie){
+      //  if(!responce || !myCookie){
+      //   handelLogout(setAuth)
+      //   return 
+      //  }
+
+      if(!responce){
         handelLogout(setAuth)
         return 
        }
